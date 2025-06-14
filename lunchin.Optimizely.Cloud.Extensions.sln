@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{484DE63F-B4DB-4D04-9C57-9F3A5547D57E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0AFA87B0-028C-4A85-8E5E-B00BCC46883F}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		build\pack.ps1 = build\pack.ps1
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lunchin.Optimizely.Cloud.Extensions.Test", "test\lunchin.Optimizely.Cloud.Extensions.Test\lunchin.Optimizely.Cloud.Extensions.Test.csproj", "{7C9EA423-27AC-455B-82F5-ED9CE45D27A3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lunchin.Optimizely.Cloud.Extensions", "src\lunchin.Optimizely.Cloud.Extensions\lunchin.Optimizely.Cloud.Extensions.csproj", "{23A229EF-0C5E-478C-92BD-61518BC429A2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lunchin.Optimizely.Cloud.Extensions.Commerce", "src\lunchin.Optimizely.Cloud.Extensions.Commerce\lunchin.Optimizely.Cloud.Extensions.Commerce.csproj", "{1F7D6E91-88F6-44D5-8E1A-E34CE6495E9E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "sample", "sample\sample.csproj", "{13D61A6B-4344-4980-8154-07AD5DF5B147}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C9EA423-27AC-455B-82F5-ED9CE45D27A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9EA423-27AC-455B-82F5-ED9CE45D27A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9EA423-27AC-455B-82F5-ED9CE45D27A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9EA423-27AC-455B-82F5-ED9CE45D27A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A229EF-0C5E-478C-92BD-61518BC429A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A229EF-0C5E-478C-92BD-61518BC429A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A229EF-0C5E-478C-92BD-61518BC429A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A229EF-0C5E-478C-92BD-61518BC429A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F7D6E91-88F6-44D5-8E1A-E34CE6495E9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F7D6E91-88F6-44D5-8E1A-E34CE6495E9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F7D6E91-88F6-44D5-8E1A-E34CE6495E9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F7D6E91-88F6-44D5-8E1A-E34CE6495E9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13D61A6B-4344-4980-8154-07AD5DF5B147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D61A6B-4344-4980-8154-07AD5DF5B147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D61A6B-4344-4980-8154-07AD5DF5B147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D61A6B-4344-4980-8154-07AD5DF5B147}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7C9EA423-27AC-455B-82F5-ED9CE45D27A3} = {484DE63F-B4DB-4D04-9C57-9F3A5547D57E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CDC78A85-4C39-4CF1-85B6-4F359652CFEE}
+	EndGlobalSection
+EndGlobal

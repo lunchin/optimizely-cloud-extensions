@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>lunchin.Optimizely.Cloud.Extensions</id>
+    <version>$version$</version>
+    <title>lunchin's PAAS CMS Tools</title>
+    <authors>lunchin</authors>
+    <owners>lunchin</owners>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/lunchin/optimizely-cloud-extensions</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">license.txt</license>
+    <description>Optimizely PAAS CMS Tools and Extensions.</description>
+    <copyright>Copyright lunchin $Year$</copyright>
+    <tags>lunchin, Optimizely</tags>
+    <repository type="git" url="https://github.com/lunchin/optimizely-cloud-extensions.git"></repository>
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="EPiServer.Azure" version="[$azureVersion$,$azureNextMajorVersion$)" />
+        <dependency id="EPiServer.CMS.UI.Core" version="[$uiVersion$,$uiNextMajorVersion$)" />
+        <dependency id="HtmlAgilityPack" version="[$agilityVersion$,$agilityNextMajorVersion$)" />
+        <dependency id="EPiServer.CMS.AspNetCore.HtmlHelpers" version="[$helpersVersion$, $helpersNextMajorVersion$)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="build\icon.png" target="" />
+    <file src="license.txt" target="" />
+    <file src="src\lunchin.Optimizely.Cloud.Extensions\bin\$Configuration$\net8.0\lunchin.Optimizely.Cloud.Extensions.dll" target="lib\net8.0\lunchin.Optimizely.Cloud.Extensions.dll" />
+    <file src="src\lunchin.Optimizely.Cloud.Extensions\bin\$Configuration$\net8.0\lunchin.Optimizely.Cloud.Extensions.pdb" target="lib\net8.0\lunchin.Optimizely.Cloud.Extensions.pdb" />
+    <file src="zipoutput\lunchin.Optimizely.Cloud.Extensions.zip" target="contentFiles\any\any\modules\_protected\lunchin.Optimizely.Cloud.Extensions"/>
+    <file src="build\CopyZipFiles.targets" target="build\net8.0\lunchin.Optimizely.Cloud.Extensions.targets" />
+  </files>
+</package>

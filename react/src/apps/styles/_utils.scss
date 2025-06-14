@@ -1,0 +1,61 @@
+// Sass module need for math.div dart will no longer support "/" for division need to use math.div
+@use 'sass:math';
+
+//Convert px to rems, to use margin: rem-calc(12);
+// would be margin: 12px;
+
+$rem-base: 16px !default;
+
+@function strip-unit($num) {
+  @return math.div($num, ($num * 0 + 1));
+}
+
+@function convert-to-rem($value, $base-value: $rem-base) {
+  $value: math.div(strip-unit($value), strip-unit($base-value)) * 1rem;
+  @if ($value == 0rem) {
+    $value: 0;
+  } // Turn 0rem into 0
+  @return $value;
+}
+
+@function rem-calc($values, $base-value: $rem-base) {
+  $max: length($values);
+
+  @if $max == 1 {
+    @return convert-to-rem(nth($values, 1), $base-value);
+  }
+
+  $remValues: ();
+  @for $i from 1 through $max {
+    $remValues: append($remValues, convert-to-rem(nth($values, $i), $base-value));
+  }
+  @return $remValues;
+}
+
+//Make multi line ellipsis
+@mixin ellipsis($numberoflines, $fontsize, $lineheight, $fontweight) {
+  display: -webkit-box;
+  overflow: hidden;
+  font-weight: $fontweight;
+  font-size: $fontsize;
+  line-height: $lineheight;
+  text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $numberoflines;
+  -webkit-box-orient: vertical;
+}
+
+@mixin centerContent($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<languages>
+	<language name="English" id="en">
+		<multicoupon>
+			<menuitem>Storage Explorer</menuitem>
+			<errormessage>Connection string EPiServerAzureBlobs is missing or is invalid.</errormessage>
+			<newcontainer>Add new Container</newcontainer>
+			<submit>Submit</submit>
+			<choosefile>Choose file</choosefile>
+		</multicoupon>
+	</language>
+</languages>

@@ -1,0 +1,29 @@
+﻿@using EPiServer.Shell.Navigation
+
+@addTagHelper *, EPiServer.Shell.UI
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    @if (IsSectionDefined("title"))
+    {
+        @RenderSection("title")
+    }
+    else
+    {
+        <title>lunchin Extensions</title>
+    }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="~/Util/images/favicon.ico" type="image/x-icon" />
+    @RenderSection("header")
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    @Html.Raw(Html.CreatePlatformNavigationMenu())
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    @RenderSection("mainContent")
+</body>
+</html>

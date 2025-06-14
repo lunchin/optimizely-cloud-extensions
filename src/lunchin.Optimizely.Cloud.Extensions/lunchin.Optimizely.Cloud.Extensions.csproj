@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <Product>lunchin.Optimizely.Cloud.Extensions</Product>
+    <IsPackable>true</IsPackable>
+    <NuspecFile>lunchin.Optimizely.Cloud.Extensions.nuspec</NuspecFile>
+    <NuspecBasePath>$(ProjectDir)..\..\</NuspecBasePath>
+    <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(VersionPrefix)$(VersionSuffix)</PackageVersion>
+    <PackageOutputPath>$(SolutionDir)artifacts\packages\</PackageOutputPath>
+    <NuspecProperties>Configuration=$(Configuration);version=$(PackageVersion);azureVersion=$(AzureVersion);azureNextMajorVersion=$(AzureNextMajorVersion);uiVersion=$(UiVersion);uiNextMajorVersion=$(UiNextMajorVersion);helpersVersion=$(HelpersVersion);helpersNextMajorVersion=$(HelpersNextMajorVersion);agilityVersion=$(AgilityVersion);agilityNextMajorVersion=$(AgilityNextMajorVersion);</NuspecProperties>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EPiServer.Azure" Version="11.2.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.22.7" />
+    <PackageReference Include="EPiServer.CMS.UI.Core" Version="12.33.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+    <EmbeddedResource Include="lang\**\*" />
+    <EmbeddedResource Include="Database\**\*.sql" />
+  </ItemGroup>
+</Project>

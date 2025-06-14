@@ -1,0 +1,153 @@
+@import './breakpoints';
+@import './utils';
+
+.edge-to-edge {
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+}
+
+.offset {
+  @media (width >= $screen-md) {
+    margin: 0 16.66666% 0 8.88888%;
+  }
+}
+
+.self-center {
+  justify-content: center;
+}
+
+.center-fixed {
+  display: flex;
+  flex-flow: wrap;
+  width: 100%;
+  margin: 0 auto;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 66.66666%;
+    max-width: 66.66666%;
+  }
+}
+
+.centered {
+  // centered here is set to 10 columns
+  margin: 0 auto;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 66.66666%;
+    max-width: 66.66666%;
+  }
+}
+
+.self-center .w-full {
+  text-align: center;
+}
+
+.w-full {
+  width: 100%;
+  max-width: 100%;
+}
+
+.w-2col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 50%;
+    max-width: 50%;
+  }
+}
+
+.w-3col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 33.33333%;
+    max-width: 33.33333%;
+  }
+}
+
+.w-4col {
+  width: 100%;
+
+  @media ($screen-md <= width < $screen-xl) {
+    flex: 0 1 50%;
+    max-width: 50%;
+  }
+
+  @media (width >= $screen-xl) {
+    flex: 0 1 25%;
+    max-width: 25%;
+  }
+}
+
+.w-5col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 20%;
+    max-width: 20%;
+  }
+}
+
+.w-6col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 16.66666%;
+    max-width: 16.66666%;
+  }
+}
+
+.w-7col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 14.28571%;
+    max-width: 14.28571%;
+  }
+}
+
+.w-8col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 12.5%;
+    max-width: 12.5%;
+  }
+}
+
+.w-9col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 11.11111%;
+    max-width: 11.11111%;
+  }
+}
+
+.w-10col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 10%;
+    max-width: 10%;
+  }
+}
+
+.w-11col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 9.0909%;
+    max-width: 9.0909%;
+  }
+}
+
+.w-12col {
+  width: 100%;
+
+  @media (width >= $screen-md) {
+    flex: 0 1 8.33333%;
+    max-width: 8.33333%;
+  }
+}

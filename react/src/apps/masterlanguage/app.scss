@@ -1,0 +1,9 @@
+﻿@import '../styles/breakpoints';
+@import '../styles/utils';
+@import '../styles/display-options';
+@import '../styles/page';
+
+.card-body .results > p {
+    padding: 25px;
+}
+

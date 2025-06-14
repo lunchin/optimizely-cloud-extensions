@@ -1,0 +1,58 @@
+{
+	"name": "lunchin-optimizely-cloud-extensions-react",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"build:cms": "webpack --config webpack/webpack.cms.config.js --mode production",
+		"build:cms:dev": "webpack --config webpack/webpack.cms.config.js --mode development",
+		"build:storageExplorer": "webpack --config webpack/webpack.storageexplorer.config.js --mode production",
+		"build:storageExplorer:dev": "webpack --config webpack/webpack.storageexplorer.config.js --mode development",
+		"build:multicoupon": "webpack --config webpack/webpack.multicoupon.config.js --mode production",
+		"build:multicoupon:dev": "webpack --config webpack/webpack.multicoupon.config.js --mode development",
+		"build:masterlanguage": "webpack --config webpack/webpack.masterlanguage.config.js --mode production",
+		"build:masterlanguage:dev": "webpack --config webpack/webpack.masterlanguage.config.js --mode development",
+		"build": " npm-run-all build:cms build:storageExplorer build:masterlanguage build:multicoupon",
+		"build:dev": "npm-run-all build:cms:dev build:storageExplorer:dev build:masterlanguage:dev build:multicoupon:dev",
+		"lint": "eslint --ext ts,tsx --fix src/",
+		"pretty": "prettier . --write"
+	},
+	"author": "lunchin",
+	"license": "ISC",
+	"dependencies": {
+		"lucide-react": "^0.483.0",
+		"rc-tree": "^5.8.7",
+		"react": "19.0.0",
+		"react-dom": "19.0.0",
+		"react-data-table-component": "^7.7.0",
+		"react-error-boundary": "^6.0.0",
+		"react-icons": "^5.5.0",
+		"react-intl": "^7.1.11",
+		"react-router-dom": "^7.6.1"
+	},
+	"devDependencies": {
+		"@types/react": "^19.1.6",
+		"@types/react-dom": "^19.1.5",
+		"@typescript-eslint/eslint-plugin": "^8.33.0",
+		"@typescript-eslint/parser": "^8.33.0",
+		"css-loader": "^7.1.2",
+		"eslint":"^9.28.0",
+		"eslint-config-react": "^1.1.7",
+		"eslint-plugin-import": "^2.31.0",
+		"eslint-plugin-prettier": "^5.4.1",
+		"eslint-plugin-react": "^7.37.5",
+		"mini-css-extract-plugin": "^2.9.2",
+		"npm-run-all": "^4.1.5",
+		"postcss-loader": "^8.1.1",
+		"prettier": "^3.5.3",
+		"querystring":"^0.2.1",
+		"sass": "^1.89.1",
+		"sass-loader": "^16.0.5",
+		"ts-loader": "^9.5.2",
+		"typescript": "^5.8.3",
+		"webpack": "^5.99.9",
+		"webpack-cli": "^6.0.1"
+	},
+	"browser": {
+		"[module-name]": false
+	}
+}

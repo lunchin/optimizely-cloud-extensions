@@ -1,0 +1,17 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.Linq;
+global using System.Text;
+global using EPiServer;
+global using EPiServer.Authorization;
+global using EPiServer.Commerce.Marketing;
+global using EPiServer.Core;
+global using EPiServer.Globalization;
+global using EPiServer.ServiceLocation;
+global using EPiServer.Shell.Modules;
+global using lunchin.Optimizely.Cloud.Extensions.Commerce.Discounts;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;

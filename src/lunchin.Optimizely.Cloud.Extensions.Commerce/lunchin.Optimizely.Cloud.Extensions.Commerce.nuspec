@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>lunchin.Optimizely.Cloud.Extensions.Commerce</id>
+    <version>$version$</version>
+    <title>lunchin's PAAS Commerce Tools</title>
+    <authors>lunchin</authors>
+    <owners>lunchin</owners>
+    <icon>icon.png</icon>
+    <projectUrl>https://github.com/lunchin/optimizely-cloud-extensions/</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">license.txt</license>
+    <description>Optimizely PAAS Commerce Tools and Extensions.</description>
+    <copyright>Copyright lunchin $Year$</copyright>
+    <tags>lunchin, Optimizely</tags>
+    <repository type="git" url="https://github.com/lunchin/optimizely-cloud-extensions.git"></repository>
+    <dependencies>
+      <group targetFramework="net8.0">
+        <dependency id="lunchin.Optimizely.Cloud.Extensions" version="$version$" />
+        <dependency id="EPiServer.Commerce.Core" version="[$commerceVersion$,$commerceNextMajorVersion$)" />
+        <dependency id="Powell.CouponCode" version="[$couponVersion$,$couponNextMajorVersion$)" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="build\icon.png" target="" />
+    <file src="license.txt" target="" />
+    <file src="src\lunchin.Optimizely.Cloud.Extensions.Commerce\bin\$Configuration$\net8.0\lunchin.Optimizely.Cloud.Extensions.Commerce.dll" target="lib\net8.0\lunchin.Optimizely.Cloud.Extensions.Commerce.dll" />
+    <file src="src\lunchin.Optimizely.Cloud.Extensions.Commerce\bin\$Configuration$\net8.0\lunchin.Optimizely.Cloud.Extensions.Commerce.pdb" target="lib\net8.0\lunchin.Optimizely.Cloud.Extensions.Commerce.pdb" />
+    <file src="zipoutput\lunchin.Optimizely.Cloud.Extensions.Commerce.zip" target="contentFiles\any\any\modules\_protected\lunchin.Optimizely.Cloud.Extensions.Commerce"/>
+    <file src="build\CopyZipFiles.targets" target="build\net8.0\lunchin.Optimizely.Cloud.Extensions.Commerce.targets" />
+  </files>
+</package>

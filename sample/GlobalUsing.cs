@@ -1,0 +1,16 @@
+﻿global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel.DataAnnotations;
+global using System.IO;
+global using System.Linq;
+global using System.Threading.Tasks;
+global using EPiServer;
+global using EPiServer.Core;
+global using EPiServer.DataAbstraction;
+global using EPiServer.DataAnnotations;
+global using EPiServer.Framework.Localization;
+global using EPiServer.ServiceLocation;
+global using EPiServer.Web;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.DependencyInjection;

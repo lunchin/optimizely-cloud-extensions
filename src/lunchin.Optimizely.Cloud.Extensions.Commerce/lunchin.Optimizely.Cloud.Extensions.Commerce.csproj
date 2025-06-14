@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>true</IsPackable>
+    <NuspecFile>lunchin.Optimizely.Cloud.Extensions.Commerce.nuspec</NuspecFile>
+    <NuspecBasePath>$(ProjectDir)..\..\</NuspecBasePath>
+    <PackageVersion Condition=" '$(PackageVersion)' == '' ">$(VersionPrefix)$(VersionSuffix)</PackageVersion>
+    <PackageOutputPath>$(SolutionDir)artifacts\packages\</PackageOutputPath>
+    <NuspecProperties>Configuration=$(Configuration);version=$(PackageVersion);commerceVersion=$(CommerceVersion);commerceNextMajorVersion=$(CommerceNextMajorVersion);couponVersion=$(CouponVersion);couponNextMajorVersion=$(CouponNextMajorVersion);</NuspecProperties>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\lunchin.Optimizely.Cloud.Extensions\lunchin.Optimizely.Cloud.Extensions.csproj" />
+	  <PackageReference Include="EPiServer.Commerce.Core" Version="14.38.1" />
+	  <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+	  <PackageReference Include="Powell.CouponCode" Version="1.0.3" />
+    <EmbeddedResource Include="lang\**\*" />
+    <EmbeddedResource Include="Database\**\*" />
+  </ItemGroup>
+</Project>

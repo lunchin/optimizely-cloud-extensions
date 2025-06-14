@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "lib": ["DOM"],
+        "baseUrl": "./src",
+        "rootDir": ".",
+        "sourceMap": true,
+        "target": "es5",
+        "jsx": "react-jsx",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "strictNullChecks": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "strict": true,
+        "skipLibCheck": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        }
+    },
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules"]
+}

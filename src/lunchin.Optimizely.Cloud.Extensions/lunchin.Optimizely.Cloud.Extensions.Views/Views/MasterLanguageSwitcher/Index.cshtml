@@ -1,0 +1,34 @@
+﻿@using EPiServer.Shell.Navigation
+@using EPiServer.Framework.Web.Resources
+@using EPiServer.Framework.Localization
+@using Microsoft.AspNetCore.Antiforgery
+@addTagHelper *, EPiServer.Shell.UI
+@model MasterLanguageSwitcherViewModel
+@{
+    Layout = "/lunchin.Optimizely.Cloud.Extensions.Views/Views/Shared/_Layout.cshtml";
+}
+
+@section title
+{
+    <title>Master Language Switcher</title>
+}
+
+@section header
+{
+    @ClientResources.RenderResources("masterlanguage", new[] { ClientResourceType.Style })
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+}
+
+@section mainContent
+{
+    <div id="root"
+         data-epi-antiforgery-header-name="@(Model.AntiforgeryOptions?.HeaderName ?? "")"
+         data-epi-antiforgery-form-field-name="@(Model.AntiforgeryOptions?.FormFieldName ?? "")"
+        @Html.Raw(Html.ApplyPlatformNavigation()) style="z-index:auto;">
+    </div>
+    @ClientResources.RenderResources("masterlanguage", new[] { ClientResourceType.Script })
+}

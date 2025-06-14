@@ -1,0 +1,62 @@
+﻿name: Continuous integration
+
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+    branches:
+      - '*'
+      - '!main'
+jobs:
+  build_test_pack:
+    name: Build, test & pack
+    runs-on: ubuntu-latest
+    env:
+      buildConfiguration: release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - name: 'Get next minor version'
+        id: semvers
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
+      - name: Set up Node.js ⚙️
+        uses: actions/setup-node@v3
+        with:
+            node-version: '20'
+      - name: Setup .NET Core @ Latest
+        uses: actions/setup-dotnet@v3
+        with:
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Install react dependencies
+        run: npm ci
+        working-directory: react
+      - name: Run react build
+        run: npm run build
+        working-directory: react
+      - name: Restore
+        run: dotnet restore lunchin.Optimizely.Cloud.Extensions.sln --configfile NuGet.config
+      - name: Build 
+        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=$(semVer)
+      - name: Test
+        run: dotnet test --no-build --configuration $buildConfiguration
+      - name: Pack
+        shell: pwsh
+        run: |
+          ./build/pack.ps1 -version ${{ steps.semvers.outputs.patch }}
+      - name: Publish packages
+        run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
+

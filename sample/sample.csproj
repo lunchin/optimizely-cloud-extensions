@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EPiServer.CMS" Version="12.33.1" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.HtmlHelpers" Version="12.22.7" />
+    <PackageReference Include="EPiServer.CMS.AspNetCore.TagHelpers" Version="12.22.7" />
+    <PackageReference Include="EPiServer.Commerce" Version="14.38.1" />
+    <PackageReference Include="EPiServer.Hosting" Version="12.22.7" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="3.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Wangkanai.Detection" Version="8.18.0" />
+    <EmbeddedResource Include="Resources\Translations\**\*" />
+    <ProjectReference Include="..\src\lunchin.Optimizely.Cloud.Extensions.Commerce\lunchin.Optimizely.Cloud.Extensions.Commerce.csproj" />
+    <ProjectReference Include="..\src\lunchin.Optimizely.Cloud.Extensions\lunchin.Optimizely.Cloud.Extensions.csproj" />
+  </ItemGroup>
+</Project>
