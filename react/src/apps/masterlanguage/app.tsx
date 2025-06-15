@@ -1,9 +1,7 @@
 import { FormEvent, FunctionComponent, useEffect, useState } from "react";
-import DataTable, { TableColumn } from "react-data-table-component";
 import { FormattedMessage } from "react-intl";
 import "./app.scss";
 import "rc-tree/assets/index.css";
-import { ErrorMessage } from "apps/errorMessage";
 import Tree from "rc-tree";
 import { DataNode, EventDataNode } from "rc-tree/lib/interface";
 

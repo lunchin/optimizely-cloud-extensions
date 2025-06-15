@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Error from "./error";
 import { ErrorBoundary } from "react-error-boundary";
-import "./styles/app.scss";
+import "./app.scss";
 
 const App = () => {
     return (
