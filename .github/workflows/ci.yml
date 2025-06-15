@@ -53,7 +53,7 @@ jobs:
       - name: Restore
         run: dotnet restore lunchin.Optimizely.Cloud.Extensions.sln --configfile NuGet.config
       - name: Build 
-        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=$(semVer)
+        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ steps.semvers.outputs.patch }}
       - name: Test
         run: dotnet test --no-build --configuration $buildConfiguration
       - name: Pack
