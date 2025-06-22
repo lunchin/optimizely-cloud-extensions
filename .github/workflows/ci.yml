@@ -57,5 +57,19 @@ jobs:
         run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
       - name: Tag branch
         run: |
+          git config --global user.email "cicd@optimizely-cloud-extensions.com"
+          git config --global user.name "devops-optimizely-cloud-extensions"
           git tag -f -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}."
           git push -f origin ${{ steps.version.outputs.version }}
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'lunchin.Optimizely.Cloud.Extensions'
+          package-type: 'nuget'
+          min-versions-to-keep: 5
+          delete-only-pre-release-versions: "true"
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'lunchin.Optimizely.Cloud.Extensions.Commerce'
+          package-type: 'nuget'
+          min-versions-to-keep: 5
+          delete-only-pre-release-versions: "true"
