@@ -16,24 +16,18 @@ jobs:
       buildConfiguration: release
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-dotnet@v4
         with:
          dotnet-version: '9.x'
-      - name: 'Get Previous tag'
-        id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+      - name: Get next version
+        uses: reecetech/version-increment@2024.10.1
+        id: version
         with:
-          fallback: 1.0.0
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - name: 'Get next minor version'
-        id: semvers
-        uses: "WyriHaximus/github-action-next-semvers@v1"
-        with:
-          version: ${{ steps.previoustag.outputs.tag }}
+          scheme: semver
+          increment: patch
       - name: Set up Node.js ⚙️
         uses: actions/setup-node@v3
         with:
@@ -53,13 +47,16 @@ jobs:
       - name: Restore
         run: dotnet restore lunchin.Optimizely.Cloud.Extensions.sln --configfile NuGet.config
       - name: Build 
-        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ steps.semvers.outputs.patch }}
+        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ steps.version.outputs.version }}
       - name: Test
         run: dotnet test --no-build --configuration $buildConfiguration
       - name: Pack
         shell: pwsh
         run: |
-          ./build/pack.ps1 -version ${{ steps.semvers.outputs.patch }}
+          ./build/pack.ps1 -version ${{ steps.semvers.outputs.patch }}-pre
       - name: Publish packages
         run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Tag branch
+        run: |
+          git tag -f -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}."
+          git push -f origin ${{ steps.version.outputs.version }}
