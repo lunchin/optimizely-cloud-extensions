@@ -52,7 +52,7 @@ jobs:
       - name: Pack
         shell: pwsh
         run: |
-          ./build/pack.ps1 -version ${{ steps.semvers.outputs.patch }}-pre
+          ./build/pack.ps1 -version ${{ steps.version.outputs.version }}
       - name: Publish packages
         run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
       - name: Tag branch
