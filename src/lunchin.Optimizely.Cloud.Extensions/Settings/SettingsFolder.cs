@@ -1,11 +1,11 @@
 ﻿namespace lunchin.Optimizely.Cloud.Extensions.Settings;
 
-[ContentType(GUID = "c709627f-ca9f-4c77-b0fb-8563287ebd93")]
-[AvailableContentTypes(Include = new[] { typeof(SettingsBase), typeof(SettingsFolder) })]
+[ContentType(GUID = "38e8d262-ad43-4fc9-8b1f-3fc03e41ea26")]
+[AvailableContentTypes(Include = [typeof(SettingsBase), typeof(SettingsFolder)])]
 public class SettingsFolder : ContentFolder
 {
     public const string SettingsRootName = "SettingsRoot";
-    public static Guid SettingsRootGuid = new("79611ee5-7ddd-4ac8-b00e-5e8e8d2a57ee");
+    public static Guid SettingsRootGuid = new("9594b873-5e96-4fac-ac55-87303fc88a41");
 
     private Injected<LocalizationService> _localizationService;
     private static Injected<ContentRootService> _rootService;

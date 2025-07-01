@@ -1,5 +1,7 @@
-using sample.Business.Rendering;
+﻿using sample.Business.Rendering;
 using EPiServer.SpecializedProperties;
+using EPiServer.Commerce.Catalog.DataAnnotations;
+using sample.Models.Classifications;
 
 namespace sample.Models.Pages;
 
@@ -82,6 +84,13 @@ public abstract class SitePageData : PageData, ICustomCssInContentArea
         Order = 300)]
     [CultureSpecific]
     public virtual bool HideSiteFooter { get; set; }
+
+    [Display(Name = "Topic",
+       GroupName = SystemTabNames.Content,
+       Order = 500)]
+    [AllowedTypes(typeof(Topic))]
+    public virtual IList<ContentReference> Topics { get; set; }
+
 
     public string ContentAreaCssClass => "teaserblock";
 }

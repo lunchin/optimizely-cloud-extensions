@@ -20,7 +20,13 @@ public class ExtensionsOptions
 
     public bool SiteHostnameInitilizationEnabled { get; set; } = true;
 
+    public bool ImagePreviewEnabled { get; set; } = true;
+
     public string AltTextPropertyName { get; set; } = "AltText";
+
+    public bool TaxonomyEnabled { get; set; } = true;
+
+    public bool HideDefaultCategoryEnabled { get; set; } = true;
 }
 
 public class Site

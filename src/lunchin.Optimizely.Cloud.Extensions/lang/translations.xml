@@ -21,6 +21,11 @@
 				<customselecttitle>Site setting</customselecttitle>
 				<name>Site settings</name>
 			</globalsettings>
+            <taxonomy>
+                <customselecttitle>
+                    Select title
+                </customselecttitle>
+            </taxonomy>
 		</contentrepositories>
 		<contenttypes>
 			<settingsbase>
@@ -38,7 +43,7 @@
 				<create>New setting</create>
 				<createdescription>Select where you want the setting to be created. Folders can be managed in the setting library in the assets pane.</createdescription>
 				<deletelanguagebranchdescription>Are you sure you want to permanently delete all versions of the setting &lt;strong&gt;{0}&lt;/strong&gt; in &lt;strong&gt;{1}&lt;/strong&gt;?&lt;br /&gt;This action cannot be undone.</deletelanguagebranchdescription>
-				<forthis>For This {0}</forthis>
+				<forthis>For This Setting</forthis>
 				<languagenotifications>
 					<fallback>This setting is shown in {1} on the website because it has not been published in {0} and a fallback language has been activated.</fallback>
 					<missing>This setting is in {1}. It does not exist in {0}. It will not be visible on the website.</missing>
@@ -76,6 +81,10 @@
 				<selectparent>Select Folder</selectparent>
 				<suggestedtypes>Suggested setting types</suggestedtypes>
 			</settingsbase>
+            <classificationdata>
+                <name>Classification</name>
+                <forthis>For This Classification</forthis>
+            </classificationdata>
 		</contenttypes>
 		<episerver>
 			<cms>

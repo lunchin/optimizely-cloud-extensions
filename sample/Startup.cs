@@ -50,7 +50,7 @@ public class Startup
             .AddAdminUserRegistration(options =>
             {
                 options.Behavior = EPiServer.Cms.Shell.UI.RegisterAdminUserBehaviors.Enabled | EPiServer.Cms.Shell.UI.RegisterAdminUserBehaviors.LocalRequestsOnly;
-                options.Roles = new List<string>() { Roles.Administrators, Roles.WebAdmins };
+                options.Roles = [Roles.Administrators, Roles.WebAdmins];
             })
             .AddEmbeddedLocalization<Startup>();
 
@@ -58,7 +58,7 @@ public class Startup
         {
             o.ConnectionString =  _configuration.GetConnectionString("AzureBlobConnection");
         });
-        //services.Configure<ExtensionsOptions>(options => options.EnvironmentBannerEnabled = false);
+        //services.Configure<ExtensionsOptions>(options => options.HideDefaultCategoryEnabled = false);
 
         // Required by Wangkanai.Detection
         services.AddDetection();

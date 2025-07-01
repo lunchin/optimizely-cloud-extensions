@@ -24,7 +24,7 @@ public class StorageExplorerController : Controller
 
     public async Task<IActionResult> Index()
     {
-        return await Task.FromResult(View(new MasterLanguageSwitcherViewModel
+        return await Task.FromResult(View(new StorageExplorerViewModel
         {
             AntiforgeryOptions = _antiforgeryOptions,
         }));
@@ -179,7 +179,7 @@ public class StorageExplorerController : Controller
             return breadCrumbs;
         }
 
-        var links = HttpUtility.HtmlDecode(path).Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+        var links = HttpUtility.HtmlDecode(path).Split(['/'], StringSplitOptions.RemoveEmptyEntries);
         for (var i = 0; i < links.Length; i++)
         {
             var prefix = string.Empty;

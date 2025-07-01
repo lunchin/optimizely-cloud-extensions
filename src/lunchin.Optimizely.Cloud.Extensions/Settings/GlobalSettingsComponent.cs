@@ -18,7 +18,7 @@ public sealed class GlobalSettingsComponent : ComponentDefinitionBase, IPluggabl
         var options = ServiceLocator.Current.GetInstance<IOptions<ExtensionsOptions>>().Value;
         if (options?.SettingsEnabled ?? false)
         {
-            PlugInAreas = new[] { PlugInArea.AssetsDefaultGroup };
+            PlugInAreas = [PlugInArea.AssetsDefaultGroup];
         }
     }
 }

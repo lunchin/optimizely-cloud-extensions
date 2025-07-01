@@ -1,6 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const extensions = [".ts", ".tsx", ".js", ".jsx", ".scss", ".css", ".json"];
+const extensions = ["*", ".ts", ".tsx", ".js", ".jsx", ".scss", ".css", ".json"];
 const getWebpackConfig = (env, argv) => {
     const buildSourceMaps = !!env.outputPostfix;
     const isProduction = argv.mode === "production";
@@ -31,7 +31,6 @@ const getWebpackConfig = (env, argv) => {
                 },
                 {
                     test: /\.s?css/,
-                    exclude: '/node_modules/@mantine/core/',
                     use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader", "sass-loader"],
                 },
             ],
@@ -54,6 +53,10 @@ const getWebpackConfig = (env, argv) => {
         },
         devtool: isProduction ? (buildSourceMaps ? "source-map" : false) : "inline-source-map",
         plugins: [new MiniCssExtractPlugin()],
+        optimization: {
+            concatenateModules: false,
+            chunkIds: "named",
+        },
     };
 };
 

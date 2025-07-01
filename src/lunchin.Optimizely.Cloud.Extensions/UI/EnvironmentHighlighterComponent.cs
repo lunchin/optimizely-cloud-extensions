@@ -9,13 +9,13 @@ public class EnvironmentHighlighterComponent : ComponentDefinitionBase
     private readonly ExtensionsOptions? _options;
 
     public EnvironmentHighlighterComponent()
-           : base("loce/widgets/environmentHighlighterWidget")
+           : base("loce/environmentHighlighterWidget")
     {
-        Categories = new[] { "cms" };
+        Categories = ["cms"];
         _options = ServiceLocator.Current.GetInstance<IOptions<ExtensionsOptions>>().Value;
         if (_options?.EnvironmentBannerEnabled ?? false)
         {
-            PlugInAreas = new[] { "/episerver/cms/action" };
+            PlugInAreas = ["/episerver/cms/action"];
         }
     }
 

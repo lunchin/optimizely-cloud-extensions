@@ -1,4 +1,4 @@
-﻿name: Continuous integration
+name: Continuous integration
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
         with:
           scheme: semver
           increment: patch
-      - name: Set up Node.js ⚙️
+      - name: Set up Node.js ??
         uses: actions/setup-node@v3
         with:
             node-version: '20'
@@ -65,11 +65,11 @@ jobs:
         with: 
           package-name: 'lunchin.Optimizely.Cloud.Extensions'
           package-type: 'nuget'
-          min-versions-to-keep: 5
-          delete-only-pre-release-versions: "true"
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: "false"
       - uses: actions/delete-package-versions@v5
         with: 
           package-name: 'lunchin.Optimizely.Cloud.Extensions.Commerce'
           package-type: 'nuget'
-          min-versions-to-keep: 5
-          delete-only-pre-release-versions: "true"
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: "false"

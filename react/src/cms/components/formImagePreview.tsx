@@ -5,7 +5,7 @@ interface FormImagePreviewProps {
 
 const FormImagePreview = (props: FormImagePreviewProps) => {
     const { text } = props;
-    return <img src={text} alt="grror" />;
+    return <img src={text} alt="error" />;
 };
 
 export default FormImagePreview;

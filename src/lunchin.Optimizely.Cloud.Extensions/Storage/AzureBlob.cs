@@ -18,7 +18,7 @@ public class AzureBlob
     {
         get
         {
-            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            string[] sizes = ["B", "KB", "MB", "GB", "TB"];
             var order = 0;
             while (Size >= 1024 && order < sizes.Length - 1)
             {

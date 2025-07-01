@@ -26,6 +26,7 @@ public static class Program
                 .MinimumLevel.Warning()
                 .MinimumLevel.Override("EPiServer", Serilog.Events.LogEventLevel.Information)
                 .MinimumLevel.Override("Optimizely", Serilog.Events.LogEventLevel.Information)
+                .MinimumLevel.Override("Microsoft.AspNetCore.Session.CookieProtection", Serilog.Events.LogEventLevel.Fatal)
                 .WriteTo.File("App_Data/log.txt", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 5)
             .WriteTo.Console()
             .CreateLogger();

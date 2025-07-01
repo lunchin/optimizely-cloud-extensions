@@ -1,6 +1,10 @@
-﻿using lunchin.Optimizely.Cloud.Extensions.Settings;
+﻿using EPiServer.Shell.ObjectEditing;
+using lunchin.Optimizely.Cloud.Extensions.Settings;
+using lunchin.Optimizely.Cloud.Extensions.Taxonomy;
+using lunchin.Optimizely.Cloud.Extensions.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using Microsoft.Win32;
 
 namespace lunchin.Optimizely.Cloud.Extensions;
 
@@ -21,6 +25,24 @@ public static class ApplicationBuilderExtensions
         if (options.Value.MasterLanguageEnabled)
         {
             InitializeDatabase().GetAwaiter().GetResult();
+        }
+
+        if (options.Value.TaxonomyEnabled)
+        {
+            var contentService = applicationBuilder.ApplicationServices.GetInstance<ContentRootService>();
+            var registeredRoots = applicationBuilder.ApplicationServices.GetInstance<IContentRepository>().GetItems(contentService.List(), []);
+            var settingsRootRegistered = registeredRoots.Any(x => x.ContentGuid == ClassificationFolder.ClassificationRootGuid && x.Name.Equals(ClassificationFolder.ClassificationRootName));
+
+            if (!settingsRootRegistered)
+            {
+                contentService.Register<ClassificationFolder>(ClassificationFolder.ClassificationRootName, ClassificationFolder.ClassificationRootGuid, ContentReference.RootPage);
+            }
+        }
+
+        if (options.Value.HideDefaultCategoryEnabled)
+        {
+            var registry = applicationBuilder.ApplicationServices.GetInstance<MetadataHandlerRegistry>();
+            registry.RegisterMetadataHandler(typeof(ContentData), new HideCategoryPropertyExtender(applicationBuilder.ApplicationServices.GetInstance<IOptions<ExtensionsOptions>>()));
         }
     }
 

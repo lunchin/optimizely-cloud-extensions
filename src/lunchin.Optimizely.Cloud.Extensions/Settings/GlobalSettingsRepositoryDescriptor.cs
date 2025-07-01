@@ -8,15 +8,15 @@ public class GlobalSettingsRepositoryDescriptor : ContentRepositoryDescriptorBas
 {
     public static string RepositoryKey => "globalsettings";
 
-    public override IEnumerable<Type> ContainedTypes => new[] {
+    public override IEnumerable<Type> ContainedTypes => [
         typeof(SettingsBase),
         typeof(SettingsFolder)
-    };
+    ];
 
-    public override IEnumerable<Type> CreatableTypes => new[] {
+    public override IEnumerable<Type> CreatableTypes => [
         typeof(SettingsBase),
         typeof(SettingsFolder)
-    };
+    ];
 
     public override string CustomNavigationWidget => "epi-cms/component/ContentNavigationTree";
 
@@ -24,13 +24,13 @@ public class GlobalSettingsRepositoryDescriptor : ContentRepositoryDescriptorBas
 
     public override string Key => RepositoryKey;
 
-    public override IEnumerable<Type> MainNavigationTypes => new[]
-    {
+    public override IEnumerable<Type> MainNavigationTypes =>
+    [
         typeof(SettingsBase),
         typeof(SettingsFolder)
-    };
+    ];
 
-    public override IEnumerable<string> MainViews => new string[1] { HomeView.ViewName };
+    public override IEnumerable<string> MainViews => [HomeView.ViewName];
 
     public override string Name => LocalizationService.Current.GetString("/contentrepositories/globalsettings/name");
 
