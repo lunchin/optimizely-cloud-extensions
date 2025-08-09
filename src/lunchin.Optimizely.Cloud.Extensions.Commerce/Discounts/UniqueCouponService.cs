@@ -30,7 +30,7 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
     public async Task<bool> SaveCoupons(List<UniqueCoupon> coupons)
     {
         var result = await DatabaseUtilities.ExecuteNonQueryAsync(_connectionHandler.Commerce.Name,
-            "UniqueCoupons_Save",
+            "lunchin_UniqueCoupons_Save",
             CommandType.StoredProcedure,
             [new SqlParameter("@Data", CreateUniqueCouponsDataTable(coupons))]);
 
@@ -52,7 +52,7 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
     public async Task<bool> DeleteById(long id)
     {
         var result = await DatabaseUtilities.ExecuteNonQueryAsync(_connectionHandler.Commerce.Name,
-            "UniqueCoupons_DeleteById",
+            "lunchin_UniqueCoupons_DeleteById",
             CommandType.StoredProcedure,
             [new SqlParameter("@Id", id)]);
 
@@ -68,7 +68,7 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
     public async Task<bool> DeleteByPromotionId(int id)
     {
         var result = await DatabaseUtilities.ExecuteNonQueryAsync(_connectionHandler.Commerce.Name,
-            "UniqueCoupons_DeleteByPromotionId",
+            "lunchin_UniqueCoupons_DeleteByPromotionId",
             CommandType.StoredProcedure,
             [new SqlParameter("@PromotionId", id)]);
         if (!result)
@@ -87,7 +87,7 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
             return _cache.ReadThrough(GetPromotionCacheKey(id), () =>
             {
                 return DatabaseUtilities.ExecuteReaderAsync(_connectionHandler.Commerce.Name,
-                    "UniqueCoupons_GetByPromotionId",
+                    "lunchin_UniqueCoupons_GetByPromotionId",
                     (reader) => GetUniqueCoupon(reader),
                     CommandType.StoredProcedure,
                     [new SqlParameter("@PromotionId", id)])
@@ -111,7 +111,7 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
             return _cache.ReadThrough(GetCouponCacheKey(id), () =>
             {
                 var result = DatabaseUtilities.ExecuteReaderAsync(_connectionHandler.Commerce.ConnectionString,
-                   "UniqueCoupons_GetById",
+                   "lunchin_UniqueCoupons_GetById",
                    (reader) => GetUniqueCoupon(reader),
                    CommandType.StoredProcedure,
                    [new SqlParameter("@Id", id)])
@@ -145,9 +145,10 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
 
         if (couponDB == null)
         {
-            var result = await DatabaseUtilities.RunUpgradeScript(_connectionHandler.Commerce.ConnectionString,
+            var result = await DatabaseUtilities.RunUpgradeScript(_connectionHandler.Commerce.Name,
                 "lunchin.Optimizely.Cloud.Extensions.Commerce.Database.Coupons",
-                Constants.CouponDatabaseVersionNumber);
+                Constants.CouponDatabaseVersionNumber,
+                assembly: GetType().Assembly);
 
             if (!result)
             {
@@ -161,10 +162,11 @@ public class UniqueCouponService(IConnectionStringHandler connectionHandler, ISy
         }
         else if (!(couponDB.CouponDatabaseVersion ?? "").Equals(Constants.CouponDatabaseVersionNumber))
         {
-            var result = await DatabaseUtilities.RunUpgradeScript(_connectionHandler.Commerce.ConnectionString,
+            var result = await DatabaseUtilities.RunUpgradeScript(_connectionHandler.Commerce.Name,
                 "lunchin.Optimizely.Cloud.Extensions.Commerce.Database.Coupons",
                 Constants.CouponDatabaseVersionNumber,
-                couponDB?.CouponDatabaseVersion ?? "");
+                couponDB?.CouponDatabaseVersion ?? "0.0.0",
+                GetType().Assembly);
 
             if (!result || couponDB == null)
             {

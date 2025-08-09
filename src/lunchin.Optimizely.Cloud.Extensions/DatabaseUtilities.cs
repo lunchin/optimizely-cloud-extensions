@@ -98,17 +98,18 @@ public static class DatabaseUtilities
     public static async Task<bool> RunUpgradeScript(string conectionStringName,
         string folderName,
         string latestVersion,
-        string dbVersion = "0.0.0")
+        string dbVersion = "0.0.0",
+        Assembly? assembly = null)
     {
-        var assembly = Assembly.GetExecutingAssembly();
+        if (assembly == null)
+        {
+            assembly = Assembly.GetExecutingAssembly();
+        }
+
         var sqlFiles = assembly.GetManifestResourceNames()
             .Where(x => x.StartsWith(folderName) && x.EndsWith(".sql"))
             .OrderBy(x => x);
 
-        if (string.IsNullOrEmpty(dbVersion))
-        {
-            dbVersion = "0.0.0";
-        }
         var version = new Version(dbVersion);
         var lastestVersion = new Version(latestVersion);
 

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[UniqueCoupons]
+﻿CREATE TABLE [dbo].[lunchin_UniqueCoupons]
 (
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[PromotionId] [int] NOT NULL,
@@ -9,17 +9,17 @@
 	[Created] [datetime2](7) NULL,
 	[MaxRedemptions] [int] NULL,
 	[UsedRedemptions] [int] NULL,
-    CONSTRAINT [PK_UniqueCoupons] PRIMARY KEY CLUSTERED ([Id] ASC)
+    CONSTRAINT [PK_lunchin_UniqueCoupons] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 GO
 
-CREATE NONCLUSTERED INDEX [IDX_UniqueCoupons_PromotionId] ON [dbo].[UniqueCoupons]
+CREATE NONCLUSTERED INDEX [lunchin_IDX_UniqueCoupons_PromotionId] ON [dbo].[UniqueCoupons]
 (
 	[PromotionId] ASC
 )
 GO
 
-CREATE TYPE [dbo].[udttUniqueCoupons] AS TABLE
+CREATE TYPE [dbo].[lunchin_udttUniqueCoupons] AS TABLE
 (
 	[Id] [bigint] NOT NULL,
 	[PromotionId] [int] NOT NULL,
@@ -33,57 +33,57 @@ CREATE TYPE [dbo].[udttUniqueCoupons] AS TABLE
 );
 GO
 
-CREATE PROCEDURE [dbo].[UniqueCoupons_DeleteById]
+CREATE PROCEDURE [dbo].[lunchin_UniqueCoupons_DeleteById]
 (
 	@Id BIGINT
 )
 AS
 BEGIN
-	DELETE FROM UniqueCoupons
+	DELETE FROM lunchin_UniqueCoupons
 	WHERE Id = @Id
 END
 GO
 
-CREATE PROCEDURE [dbo].[UniqueCoupons_DeleteByPromotionId]
+CREATE PROCEDURE [dbo].[lunchin_UniqueCoupons_DeleteByPromotionId]
 (
 	@PromotionId INT
 )
 AS
 BEGIN
-	DELETE FROM UniqueCoupons
+	DELETE FROM lunchin_UniqueCoupons
 	WHERE PromotionId = @PromotionId
 END
 GO
 
-CREATE PROCEDURE [dbo].[UniqueCoupons_GetById]
+CREATE PROCEDURE [dbo].[lunchin_UniqueCoupons_GetById]
 (
 	@Id BIGINT
 )
 AS
 BEGIN
-	SELECT * FROM UniqueCoupons
+	SELECT * FROM lunchin_UniqueCoupons
 	WHERE Id = @Id
 END
 GO
 
-CREATE PROCEDURE [dbo].[UniqueCoupons_GetByPromotionId]
+CREATE PROCEDURE [dbo].[lunchin_UniqueCoupons_GetByPromotionId]
 (
 	@PromotionId INT
 )
 AS
 BEGIN
-	SELECT * FROM UniqueCoupons
+	SELECT * FROM lunchin_UniqueCoupons
 	WHERE PromotionId = @PromotionId
 END
 GO
 
-CREATE PROCEDURE [dbo].[UniqueCoupons_Save]
+CREATE PROCEDURE [dbo].[lunchin_UniqueCoupons_Save]
 (
-	@Data dbo.[udttUniqueCoupons] readonly
+	@Data dbo.[lunchin_udttUniqueCoupons] readonly
 )
 AS
 BEGIN
-	MERGE dbo.UniqueCoupons AS TARGET
+	MERGE dbo.lunchin_UniqueCoupons AS TARGET
 	USING @Data AS SOURCE
 	On (TARGET.Id = SOURCE.Id)
 	WHEN MATCHED THEN 
@@ -108,9 +108,10 @@ GO
 SET QUOTED_IDENTIFIER OFF
 GO
 
-Create PROCEDURE [dbo].[UniqueCoupons_DeleteExpiredCoupons]
+Create PROCEDURE [dbo].[lunchin_UniqueCoupons_DeleteExpiredCoupons]
 AS
 BEGIN
-	DELETE FROM UniqueCoupons
+	DELETE FROM lunchin_UniqueCoupons
 	WHERE Expiration < GETDATE()
 END
+GO
