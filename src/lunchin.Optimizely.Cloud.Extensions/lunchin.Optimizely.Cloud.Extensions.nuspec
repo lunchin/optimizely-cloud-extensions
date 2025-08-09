@@ -22,6 +22,9 @@
         <dependency id="EPiServer.CMS.AspNetCore.HtmlHelpers" version="[$helpersVersion$, $helpersNextMajorVersion$)" />
       </group>
     </dependencies>
+    <contentFiles>
+      <files include="any/any/modules/_protected/lunchin.Optimizely.Cloud.Extensions/lunchin.Optimizely.Cloud.Extensions.zip" buildAction="None" copyToOutput="true"  />
+    </contentFiles>
   </metadata>
   <files>
     <file src="build\icon.png" target="" />

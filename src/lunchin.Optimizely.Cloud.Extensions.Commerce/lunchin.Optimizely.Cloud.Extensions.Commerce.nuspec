@@ -21,6 +21,9 @@
         <dependency id="Powell.CouponCode" version="[$couponVersion$,$couponNextMajorVersion$)" />
       </group>
     </dependencies>
+    <contentFiles>
+      <files include="any/any/modules/_protected/lunchin.Optimizely.Cloud.Extensions.Commerce/lunchin.Optimizely.Cloud.Extensions.Commerce.zip" buildAction="None" copyToOutput="true"  />
+    </contentFiles>
   </metadata>
   <files>
     <file src="build\icon.png" target="" />
