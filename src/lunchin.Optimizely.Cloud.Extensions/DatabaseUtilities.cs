@@ -105,6 +105,10 @@ public static class DatabaseUtilities
             .Where(x => x.StartsWith(folderName) && x.EndsWith(".sql"))
             .OrderBy(x => x);
 
+        if (string.IsNullOrEmpty(dbVersion))
+        {
+            dbVersion = "0.0.0";
+        }
         var version = new Version(dbVersion);
         var lastestVersion = new Version(latestVersion);
 
