@@ -36,7 +36,7 @@ $commerceParts = $commerceVersion.Split(".")
 $commerceMajor = [int]::Parse($commerceParts[0]) + 1
 $commerceNextMajorVersion = ($commerceMajor.ToString() + ".0.0") 
 
-$couponNode = $commerceVersionFile.SelectSingleNode("Project/ItemGroup/PackageReference[@Include='EPiServer.Commerce.Core']")
+$couponNode = $commerceVersionFile.SelectSingleNode("Project/ItemGroup/PackageReference[@Include='Powell.CouponCode']")
 $couponVersion = $couponNode.Attributes["Version"].Value
 $couponParts = $couponVersion.Split(".")
 $couponMajor = [int]::Parse($couponParts[0]) + 1
