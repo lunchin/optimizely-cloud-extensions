@@ -7,7 +7,7 @@
     <ProjectReference Include="..\..\src\lunchin.Optimizely.Cloud.Extensions.Commerce\lunchin.Optimizely.Cloud.Extensions.Commerce.csproj" />
     <ProjectReference Include="..\..\src\lunchin.Optimizely.Cloud.Extensions\lunchin.Optimizely.Cloud.Extensions.csproj" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.1">
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
