@@ -13,7 +13,7 @@
 );
 GO
 
-CREATE NONCLUSTERED INDEX [lunchin_IDX_UniqueCoupons_PromotionId] ON [dbo].[UniqueCoupons]
+CREATE NONCLUSTERED INDEX [IDX_lunchin_UniqueCoupons_PromotionId] ON [dbo].[lunchin_UniqueCoupons]
 (
 	[PromotionId] ASC
 )
