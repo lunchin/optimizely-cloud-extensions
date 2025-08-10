@@ -6,6 +6,14 @@
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/lunchin/optimizely-cloud-extensions/ci.yml?branch=main)
 ![Version](https://img.shields.io/github/v/tag/lunchin/optimizely-cloud-extensions)
 
+[Overview](#overview)
+
+[Installation and Configuration](#installation-and-configuration)
+
+[Features](#features)
+
+[Debug with Source Link](#debug-with-sourcelink)
+
 ## Overview
 
 **lunchin.Optimizely.Cloud.Extensions** and **lunchin.Optimizely.Cloud.Extensions.Commerce** are two packages that offer common extensions and tools when working with the Optimizely PASS CMS and Commerce platforms.  Some of the features I created for [foundation](https://github.com/episerver/Foundation), others based on projects needs, and some have been incorporated because there was no CMS 12 version.  If there are additional suggestions for tools please feel free to add [feature request](https://github.com/lunchin/optimizely-cloud-extensions/issues/new).
@@ -17,7 +25,7 @@
 Install **lunchin.Optimizely.Cloud.Extensions** or **lunchin.Optimizely.Cloud.Extensions.Commerce** from the Optimizely Nuget feed.
 
 To configure the CMS package add the following to Startup
-```
+```C#
 public void ConfigureServices(IServiceCollection services)
 {
     services..AddlunchinOptimizelyCloudExtensions(_configuration);
@@ -32,7 +40,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ```
 
 To configure the Commerce package add the following to Startup
-```
+```C#
 public void ConfigureServices(IServiceCollection services)
 {
     services..AddlunchinOptimizelyCommerceCloudExtensions(_configuration);
@@ -51,7 +59,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 Every feature in both packages can be disabled.  By default all features are enabled and you must explicitly disable the feature. Here are examples on how to disable.
 
 ### Disable Feature Through Configuration Files
-```
+```json
 {
     "loce" : {
         "extensions" : {
@@ -72,7 +80,7 @@ Every feature in both packages can be disabled.  By default all features are ena
 ```
 
 ### Disable Feature Through Startup
-```
+```C#
 services.PostConfigure<ExtensionsOptions>(o =>
 {
     o.EnvironmentBannerEnabled = false;
@@ -100,7 +108,7 @@ This feature adds a banner in edit mode so you know which enviorment you are on.
 There are two configuration options control the background and text colors.
 
 #### Configuration Files
-```
+```json
 {
     "loce" : {
         "extensions" : {
@@ -112,7 +120,7 @@ There are two configuration options control the background and text colors.
 ```
 
 #### Through Startup
-```
+```C#
 services.PostConfigure<ExtensionsOptions>(o =>
 {
     o.EnvironmentBannerBaackgroundColor = "#2cd31f";
@@ -146,7 +154,7 @@ This feature allows you to preview the image in Forms mode which is useful if yo
 
 Add the following property to your image types
 
-```
+```C#
 [UIHint(Constants.FormImagePreview)]
 [Display(
         GroupName = SystemTabNames.Content,
@@ -168,7 +176,7 @@ This feature allows you to configure hostnames for each of the sites in your Opt
 You must specifiy the site name and the hostnames to add.  The first one listed will be considered the primary domain.
 
 #### Configuration Files
-```
+```json
 {
     "loce": {
         "extensions": {
@@ -188,7 +196,7 @@ You must specifiy the site name and the hostnames to add.  The first one listed 
 ```
 
 #### Through Startup
-```
+```C#
 services.PostConfigure<ExtensionsOptions>(options =>
 {
     options.Sites = [
@@ -213,7 +221,7 @@ This feature allows you to crate taxonomy content which you can use to implement
 ![Taxonomy](./features/Taxonomy.png)
 
 #### Example content type
-```
+```C#
 [AvailableContentTypes(Availability = Availability.Specific, Include = [typeof(ClassificationData)])]
 [ContentType(GUID = "be6f1bd4-5bba-498c-95be-d790b068a677",
     DisplayName = "Topic taxonomy",
@@ -232,3 +240,23 @@ This feature adds the ability for promotions in Optimizely Commerce Connect to h
 
 #### Scheduled Job
 There is a Delete expired coupon job that is responsible for cleaning up expired coupons.  It is disabled by default and should be turned on to run once per day if using this feature.
+
+## Debug with SourceLink
+Both packages are Source Link enabled and the nuget packages contain the pdbs. 
+
+To enable source link under Options => Debug, enable source link.
+
+![Enable Source Link](./features/enableSourceLink.png)
+
+ In order to get the pdbs to the output folder, you will need to add the following target to your csproj file.  You will need to update this target every time you upgrade your package.
+
+```xml
+<Target Name="CopyPdbsFromNuGet" AfterTargets="ResolvePackageAssets">
+	<ItemGroup>
+		<NuGetPdbs Include="$(NuGetPackageRoot)\lunchin.Optimizely.Cloud.Extensions\1.0.9\lib\**\*.pdb" />
+		<NuGetPdbsCommerce Include="$(NuGetPackageRoot)\lunchin.Optimizely.Cloud.Extensions.Commerce\1.0.9\lib\**\*.pdb" />
+    </ItemGroup>
+	<Copy SourceFiles="@(NuGetPdbs)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+	<Copy SourceFiles="@(NuGetPdbsCommerce)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="true" />
+</Target>
+```
