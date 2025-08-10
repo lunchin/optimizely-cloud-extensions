@@ -67,7 +67,7 @@ Every feature in both packages can be disabled.  By default all features are ena
             "StorageExplorerEnabled" : false,
             "MasterLanguageEnabled" : false,
             "SettingsEnabled" : false,
-            "SiteHostnameInitilizationEnabled" : false,
+            "SiteHostnameInitializationEnabled" : false,
             "ImagePreviewEnabled" : false,
             "TaxonomyEnabled": false,
             "HideDefaultCategoryEnabled": false
@@ -88,7 +88,7 @@ services.PostConfigure<ExtensionsOptions>(o =>
     o.ImagePreviewEnabled = false;
     o.MasterLanguageEnabled = false;
     o.SettingsEnabled = false;
-    o.SiteHostnameInitilizationEnabled = false;
+    o.SiteHostnameInitializationEnabled = false;
     o.StorageExplorerEnabled = false;
     o.TaxonomyEnabled = false;
     
@@ -101,7 +101,7 @@ services.PostConfigure<ExtensionsOptions>(o =>
 
 ### Environment Banner
 
-This feature adds a banner in edit mode so you know which enviorment you are on.  This tool is probably not needed if you are using Optimizely Indentity because it shows which enviornment you are working in as well.
+This feature adds a banner in edit mode so you know which environment you are on.  This tool is probably not needed if you are using Optimizely Identity because it shows which environment you are working in as well.
 
 ![Environment Banner Feature](./features/EnvironmentBanner.png)
 
@@ -112,7 +112,7 @@ There are two configuration options control the background and text colors.
 {
     "loce" : {
         "extensions" : {
-            "EnvironmentBannerBaackgroundColor" : "#2cd31f",
+            "EnvironmentBannerBackgroundColor" : "#2cd31f",
             "EnvironmentBannerTextColor" : "#ffffff",
         }
     }
@@ -123,26 +123,26 @@ There are two configuration options control the background and text colors.
 ```C#
 services.PostConfigure<ExtensionsOptions>(o =>
 {
-    o.EnvironmentBannerBaackgroundColor = "#2cd31f";
+    o.EnvironmentBannerBackgroundColor = "#2cd31f";
     o.EnvironmentBannerTextColor = "#ffffff";
 })
 ```
 
 ### Storage Explorer
 
-This feature allows a user to browse the blob storage for the given enviornment.  This is useful if you need to quikly get access to logs or you need to inspect files you are storing ib blob storage.  There is also the ability to upload files as well.
+This feature allows a user to browse the blob storage for the given environment.  This is useful if you need to quickly get access to logs or you need to inspect files you are storing ib blob storage.  There is also the ability to upload files as well.
 
 ![Storage Explorer](./features/StorageExplorer.png)
 
 ### Site Settings
 
-This feature allows a user to create setting types which will be created for each site.  This is useful to be able to have seperate publishing flow for settings rather than having to publish the home page if the settings are kept there.
+This feature allows a user to create setting types which will be created for each site.  This is useful to be able to have separate publishing flow for settings rather than having to publish the home page if the settings are kept there.
 
 ![Site Settings](./features/SiteSettings.png)
 
 ### Master Language Switcher
 
-This feature allows you to change the master language of a content.  This is useful because they only way to do this otherwise is create a new content and manually copy over all the fields which also lose the link to the other langauge versions if there are any.
+This feature allows you to change the master language of a content.  This is useful because they only way to do this otherwise is create a new content and manually copy over all the fields which also lose the link to the other language versions if there are any.
 
 ![Master Language Switcher](./features/MasterLanguageSwitcher.png)
 
@@ -165,7 +165,7 @@ public virtual string FormPreview { get; set; }
 
 ### Hide Default Category
 
-This feature allows you to hide the default category provided by Optimizely out of the box.  This is useful if you are using another taxonomy tool like the featue provided by this CMS package.
+This feature allows you to hide the default category provided by Optimizely out of the box.  This is useful if you are using another taxonomy tool like the feature provided by this CMS package.
 
 ![Hide Default Category](./features/HideCategory.png)
 
@@ -173,7 +173,7 @@ This feature allows you to hide the default category provided by Optimizely out 
 
 This feature allows you to configure hostnames for each of the sites in your Optimizley instance per environment.  This is useful for copy down locally, or to inegration and preproduction environments.  Production is never altered. 
 
-You must specifiy the site name and the hostnames to add.  The first one listed will be considered the primary domain.
+You must specify the site name and the hostnames to add.  The first one listed will be considered the primary domain.
 
 #### Configuration Files
 ```json
@@ -216,7 +216,7 @@ services.PostConfigure<ExtensionsOptions>(options =>
 
 ### Taxonomy
 
-This feature allows you to crate taxonomy content which you can use to implement categories, tags, etc to search and filter content.  Since it is standard content will work in both Optimziey Graph as well as Search and Navigation.  This just sets up a base abtract content type, you will need to create your own to use.
+This feature allows you to crate taxonomy content which you can use to implement categories, tags, etc to search and filter content.  Since it is standard content will work in both Optimizely Graph as well as Search and Navigation.  This just sets up a base abstract content type, you will need to create your own to use.
 
 ![Taxonomy](./features/Taxonomy.png)
 
@@ -234,7 +234,7 @@ public class Topic : ClassificationData
 
 ### Multi Coupon Code Provider
 
-This feature adds the ability for promotions in Optimizely Commerce Connect to have multipe coupon codes instead of the default one that is out of the box.  This is useful if you want to support sending individual discount codes to customers for different reasons.
+This feature adds the ability for promotions in Optimizely Commerce Connect to have multiple coupon codes instead of the default one that is out of the box.  This is useful if you want to support sending individual discount codes to customers for different reasons.
 
 ![Multi Coupon](./features/MultiCoupon.png)
 

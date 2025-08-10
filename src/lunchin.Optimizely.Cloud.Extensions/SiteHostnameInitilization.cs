@@ -23,7 +23,7 @@ public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
 
     public async Task InitializeAsync(HttpContext httpContext)
     {
-        if (!_extensionsOptions.SiteHostnameInitilizationEnabled)
+        if (!_extensionsOptions.SiteHostnameInitializationEnabled)
         {
             return;
         }

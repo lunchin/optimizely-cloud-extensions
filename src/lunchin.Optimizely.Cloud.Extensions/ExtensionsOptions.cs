@@ -8,7 +8,7 @@ public class ExtensionsOptions
 
     public bool EnvironmentBannerEnabled { get; set; } = true;
 
-    public string EnvironmentBannerBaackgroundColor { get; set; } = "#2cd31f";
+    public string EnvironmentBannerBackgroundColor { get; set; } = "#2cd31f";
 
     public string EnvironmentBannerTextColor { get; set; } = "#ffffff";
 
@@ -18,7 +18,7 @@ public class ExtensionsOptions
 
     public bool SettingsEnabled { get; set; } = true;
 
-    public bool SiteHostnameInitilizationEnabled { get; set; } = true;
+    public bool SiteHostnameInitializationEnabled { get; set; } = true;
 
     public bool ImagePreviewEnabled { get; set; } = true;
 

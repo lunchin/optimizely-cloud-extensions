@@ -24,7 +24,7 @@ public class EnvironmentHighlighterComponent : ComponentDefinitionBase
 
         var component = base.CreateComponent();
         component.Settings.Add("environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"));
-        component.Settings.Add("backgroundColor", _options?.EnvironmentBannerBaackgroundColor ?? "#2cd31f");
+        component.Settings.Add("backgroundColor", _options?.EnvironmentBannerBackgroundColor ?? "#2cd31f");
         component.Settings.Add("textColor", _options?.EnvironmentBannerTextColor ?? "ffffff");
         return component;
     }
