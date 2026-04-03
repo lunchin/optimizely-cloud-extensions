@@ -1,4 +1,5 @@
-﻿using EPiServer.Cms.Shell.Search;
+﻿using EPiServer.Applications;
+using EPiServer.Cms.Shell.Search;
 using EPiServer.Shell;
 using EPiServer.Shell.Search;
 using EPiServer.Web.Routing;
@@ -8,30 +9,26 @@ namespace lunchin.Optimizely.Cloud.Extensions.Taxonomy;
 [SearchProvider]
 public class ClassifiicationSearchProvider(
     LocalizationService localizationService,
-    ISiteDefinitionResolver siteDefinitionResolver,
-    IContentTypeRepository<ContentType> contentTypeRepository,
+    IApplicationResolver applicationResolver,
+    IContentTypeRepository contentTypeRepository,
     EditUrlResolver editUrlResolver,
-    ServiceAccessor<SiteDefinition> currentSiteDefinition,
     IContentLanguageAccessor languageResolver,
     UrlResolver urlResolver,
-    TemplateResolver templateResolver,
     UIDescriptorRegistry uiDescriptorRegistry,
     IContentLoader contentLoader) : ContentSearchProviderBase<ClassificationData, ContentType>(
         localizationService: localizationService,
-        siteDefinitionResolver: siteDefinitionResolver,
+        applicationResolver: applicationResolver,
         contentTypeRepository: contentTypeRepository,
         editUrlResolver: editUrlResolver,
-        currentSiteDefinition: currentSiteDefinition,
         languageResolver: languageResolver,
         urlResolver: urlResolver,
-        templateResolver: templateResolver,
         uiDescriptorRegistry: uiDescriptorRegistry)
 {
-    internal const string SearchArea = "Taxonomy/classfications";
+    internal const string _searchArea = "Taxonomy/classfications";
     private readonly IContentLoader _contentLoader = contentLoader;
     private readonly LocalizationService _localizationService = localizationService;
 
-    public override string Area => SearchArea;
+    public override string Area => _searchArea;
 
     public override string Category => _localizationService.GetString("/episerver/cms/components/taxonomy/title");
 

@@ -1,23 +1,17 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using EPiServer.Applications;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
 namespace lunchin.Optimizely.Cloud.Extensions;
 
-public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
+public class SiteHostnameInitilization(IApplicationRepository applicationRepository,
+                        IOptions<ExtensionsOptions> extensionsOptions) : IBlockingFirstRequestInitializer
 {
-    private const string Preproduction = "Preproduction";
-    private const string Integration = "Integration";
-    private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-    private readonly ExtensionsOptions _extensionsOptions;
-    private readonly string _environment;
-
-    public SiteHostnameInitilization(ISiteDefinitionRepository siteDefinitionRepository,
-                            IOptions<ExtensionsOptions> extensionsOptions)
-    {
-        _siteDefinitionRepository = siteDefinitionRepository;
-        _extensionsOptions = extensionsOptions.Value;
-        _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
-    }
+    private const string _preproduction = "Preproduction";
+    private const string _integration = "Integration";
+    private readonly IApplicationRepository _applicationRepository = applicationRepository;
+    private readonly ExtensionsOptions _extensionsOptions = extensionsOptions.Value;
+    private readonly string _environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "";
 
     public bool CanRunInParallel => false;
 
@@ -34,12 +28,12 @@ public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
 
     private void UpdateSiteHostnames(HttpContext context)
     {
-        if (!_environment.Equals(Environments.Development) && !_environment.Equals(Integration) && !_environment.Equals(Preproduction))
+        if (!_environment.Equals(Environments.Development) && !_environment.Equals(_integration) && !_environment.Equals(_preproduction))
         {
             return;
         }
 
-        var sites = _siteDefinitionRepository.List();
+        var sites = _applicationRepository.List();
         if (!sites?.Any() ?? true)
         {
             return;
@@ -48,14 +42,13 @@ public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
         var request = context.Request;
         foreach (var siteHostname in _extensionsOptions.Sites)
         {
-            var site = sites?.FirstOrDefault(x => x.Name.Equals(siteHostname.Name, StringComparison.OrdinalIgnoreCase));
-            if (site == null)
+            if (sites?.FirstOrDefault(x => x.Name.Equals(siteHostname.Name, StringComparison.OrdinalIgnoreCase)) is not InProcessWebsite site)
             {
                 continue;
             }
 
-            var hostnames = siteHostname.Hostname?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-            if (!hostnames.Any())
+            var hostnames = siteHostname.Hostname?.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) ?? [];
+            if (hostnames.Length == 0)
             {
                 continue;
             }
@@ -66,8 +59,8 @@ public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
                 for (var i = 0; i < hostnames.Length; i++)
                 {
                     identical = i == 0
-                        ? hostnames[i].Equals(site.Hosts[i].Name, StringComparison.OrdinalIgnoreCase) && site.Hosts[i].Type == HostDefinitionType.Primary
-                        : hostnames[i].Equals(site.Hosts[i].Name, StringComparison.OrdinalIgnoreCase);
+                        ? hostnames[i].Equals(site.Hosts[i].Authority, StringComparison.OrdinalIgnoreCase) && site.Hosts[i].Type == ApplicationHostType.Primary
+                        : hostnames[i].Equals(site.Hosts[i].Authority, StringComparison.OrdinalIgnoreCase);
                 }
 
                 if (identical)
@@ -76,19 +69,20 @@ public class SiteHostnameInitilization : IBlockingFirstRequestInitializer
                 }
             }
 
-            site = site.CreateWritableClone();
-            site.SiteUrl = new Uri($"https://{hostnames[0]}");
+            if (site.CreateWritableClone() is not InProcessWebsite writableSite)
+            {
+                continue;
+            }
             site.Hosts.Clear();
 
             for (var i = 0; i < hostnames.Length; i++)
             {
-                site.Hosts.Add(new HostDefinition
+                site.Hosts.Add(new ApplicationHost(hostnames[i])
                 {
-                    Name = hostnames[i],
-                    Type = i == 0 ? HostDefinitionType.Primary : HostDefinitionType.Undefined,
+                    Type = i == 0 ? ApplicationHostType.Primary : ApplicationHostType.Default,
                 });
             }
-            _siteDefinitionRepository.Save(site);
+            _applicationRepository.SaveAsync(writableSite).GetAwaiter().GetResult();
         }
     }
 }

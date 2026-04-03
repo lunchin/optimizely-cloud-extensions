@@ -1,15 +1,10 @@
-using sample.Models.Pages;
+﻿using sample.Models.Pages;
 
 namespace sample.Models.ViewModels;
 
-public class PageViewModel<T> : IPageViewModel<T> where T : SitePageData
+public class PageViewModel<T>(T currentPage) : IPageViewModel<T> where T : SitePageData
 {
-    public PageViewModel(T currentPage)
-    {
-        CurrentPage = currentPage;
-    }
-
-    public T CurrentPage { get; private set; }
+    public T CurrentPage { get; private set; } = currentPage;
 
     public LayoutModel Layout { get; set; }
 

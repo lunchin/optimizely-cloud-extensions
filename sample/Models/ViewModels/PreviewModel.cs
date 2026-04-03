@@ -1,19 +1,12 @@
-using sample.Models.Pages;
+﻿using sample.Models.Pages;
 
 namespace sample.Models.ViewModels;
 
-public class PreviewModel : PageViewModel<SitePageData>
+public class PreviewModel(SitePageData currentPage, IContent previewContent) : PageViewModel<SitePageData>(currentPage)
 {
-    public PreviewModel(SitePageData currentPage, IContent previewContent)
-        : base(currentPage)
-    {
-        PreviewContent = previewContent;
-        Areas = [];
-    }
+    public IContent PreviewContent { get; set; } = previewContent;
 
-    public IContent PreviewContent { get; set; }
-
-    public List<PreviewArea> Areas { get; set; }
+    public List<PreviewArea> Areas { get; set; } = [];
 
     public class PreviewArea
     {

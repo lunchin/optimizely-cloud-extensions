@@ -1,4 +1,4 @@
-﻿using EPiServer.Commerce.Internal.Migration;
+﻿//using EPiServer.Commerce.Internal.Migration;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Web.Mvc;
@@ -23,14 +23,14 @@ public class CustomizedRenderingInitialization : IConfigurableModule
 
     public void Initialize(InitializationEngine context)
     {
-        var manager = context.Locate.Advanced.GetInstance<MigrationManager>();
-        if (manager.SiteNeedsToBeMigrated())
-        {
-            manager.Migrate();
-        }
-        context.Locate.Advanced.GetInstance<ITemplateResolverEvents>().TemplateResolved += TemplateCoordinator.OnTemplateResolved;
-        var contentTypeRepository = context.Locate.Advanced.GetInstance<IContentTypeRepository>();
-        var availableSettingsRepository = context.Locate.Advanced.GetInstance<IAvailableSettingsRepository>();
+        //var manager = context.Services.GetInstance<MigrationManager>();
+        //if (manager.SiteNeedsToBeMigrated())
+        //{
+        //    manager.Migrate();
+        //}
+        context.Services.GetInstance<ITemplateResolverEvents>().TemplateResolved += TemplateCoordinator.OnTemplateResolved;
+        var contentTypeRepository = context.Services.GetInstance<IContentTypeRepository>();
+        var availableSettingsRepository = context.Services.GetInstance<IAvailableSettingsRepository>();
 
         var sysRoot = contentTypeRepository.Load("SysRoot") as PageType;
         var setting = new AvailableSetting { Availability = Availability.All };
@@ -38,5 +38,5 @@ public class CustomizedRenderingInitialization : IConfigurableModule
     }
 
     public void Uninitialize(InitializationEngine context) =>
-        context.Locate.Advanced.GetInstance<ITemplateResolverEvents>().TemplateResolved -= TemplateCoordinator.OnTemplateResolved;
+        context.Services.GetInstance<ITemplateResolverEvents>().TemplateResolved -= TemplateCoordinator.OnTemplateResolved;
 }

@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using EPiServer.Filters;
 
 namespace sample.Models.Blocks;
@@ -50,7 +50,7 @@ public class PageListBlock : SiteBlockData
         GroupName = SystemTabNames.Content,
         Order = 5)]
     [Required]
-    public virtual PageReference Root { get; set; }
+    public virtual ContentReference Root { get; set; }
 
     [Display(
         GroupName = SystemTabNames.Content,

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using sample.Helpers;
 using sample.Models.ViewModels;
 using EPiServer.Web.Mvc;
@@ -13,14 +13,9 @@ namespace sample.Business.Rendering;
 /// <remarks>
 /// Prints an error message for editors so that they can easily report errors to developers.
 /// </remarks>
-public class ErrorHandlingContentRenderer : IContentRenderer
+public class ErrorHandlingContentRenderer(MvcContentRenderer mvcRenderer) : IContentRenderer
 {
-    private readonly MvcContentRenderer _mvcRenderer;
-
-    public ErrorHandlingContentRenderer(MvcContentRenderer mvcRenderer)
-    {
-        _mvcRenderer = mvcRenderer;
-    }
+    private readonly MvcContentRenderer _mvcRenderer = mvcRenderer;
 
     /// <summary>
     /// Renders the contentData using the wrapped renderer and catches common, non-critical exceptions.

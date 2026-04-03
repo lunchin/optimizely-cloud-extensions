@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.Json;
+using EPiServer.Applications;
 using EPiServer.Core.Html.StringParsing;
 using EPiServer.Globalization;
 using EPiServer.Web.Mvc.Html;
@@ -19,7 +20,7 @@ public static class HelperExtensions
     private static readonly Lazy<UrlResolver> _urlResolver = new(ServiceLocator.Current.GetInstance<UrlResolver>);
     private static readonly Lazy<IPermanentLinkMapper> _permanentLinkMapper = new(ServiceLocator.Current.GetInstance<IPermanentLinkMapper>);
     private static readonly Lazy<IUrlResolver> _iUrlResolver = new(ServiceLocator.Current.GetInstance<IUrlResolver>);
-    private static readonly Lazy<ISiteDefinitionResolver> _siteDefinitionResolver = new(ServiceLocator.Current.GetInstance<ISiteDefinitionResolver>);
+    private static readonly Lazy<IApplicationResolver> _applicationResolver = new(ServiceLocator.Current.GetInstance<IApplicationResolver>);
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -49,11 +50,13 @@ public static class HelperExtensions
         return content == null ? ContentReference.EmptyReference : content.ContentLink;
     }
 
+    [CLSCompliant(false)]
     public static string GetUrl<T>(this T content, bool isAbsolute = false) where T : IContent, ILocale, IRoutable
     {
         return content.GetUri(isAbsolute).ToString();
     }
 
+    [CLSCompliant(false)]
     public static Uri GetUri<T>(this T content, bool isAbsolute = false) where T : IContent, ILocale, IRoutable
     {
         return content.ContentLink.GetUri(content.Language.Name, isAbsolute);
@@ -78,14 +81,24 @@ public static class HelperExtensions
             return uri;
         }
 
-        var siteDefinition = _siteDefinitionResolver.Value.GetByContent(contentRef, true, true);
-        var host = siteDefinition.Hosts.FirstOrDefault(h => h.Type == HostDefinitionType.Primary) ?? siteDefinition.Hosts.FirstOrDefault(h => h.Type == HostDefinitionType.Undefined);
-        var baseUrl = (host?.Name ?? "*").Equals("*") ? siteDefinition.SiteUrl : new Uri($"http{((host?.UseSecureConnection ?? false) ? "s" : string.Empty)}://{host?.Name ?? ""}");
+        if (_applicationResolver.Value.GetByContent(contentRef, true) is not IRoutableApplication siteDefinition)
+        {
+            return new Uri(string.Empty);
+        }
+
+        var host = siteDefinition.Hosts.FirstOrDefault(h => h.Type == ApplicationHostType.Primary) ?? siteDefinition.Hosts.FirstOrDefault(h => h.Type == ApplicationHostType.Default);
+        if (host == null)
+        {
+            return new Uri(string.Empty);
+        }
+        var baseUrl = new Uri($"http{((host.PreferredUrlScheme == UrlScheme.Https) ? "s" : string.Empty)}://{host.Authority}");
         return new Uri(baseUrl, urlString);
     }
 
+    [CLSCompliant(false)]
     public static IContent Get<TContent>(this ContentReference contentLink) where TContent : IContent => _contentLoader.Value.Get<TContent>(contentLink);
 
+    [CLSCompliant(false)]
     public static IContent Get<TContent>(this ContentReference contentLink, string language) where TContent : IContent =>
         _contentLoader.Value.Get<TContent>(contentLink, CultureInfo.GetCultureInfo(language));
 
@@ -107,14 +120,14 @@ public static class HelperExtensions
         return PermanentLinkUtility.FindContentReference(contentGuid).GetPublicUrl(language);
     }
 
+    [CLSCompliant(false)]
     public static IList<T>? GetContentItems<T>(this IEnumerable<ContentAreaItem> contentAreaItems) where T : IContentData
     {
-        return contentAreaItems == null || !contentAreaItems.Any()
+        return contentAreaItems?.Any() != true
             ? null
-            : (IList<T>)_contentLoader.Value
+            : [.. _contentLoader.Value
             .GetItems(contentAreaItems.Select(x => x.ContentLink), [LanguageLoaderOption.FallbackWithMaster()])
-            .OfType<T>()
-            .ToList();
+            .OfType<T>()];
     }
 
     public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
@@ -144,20 +157,21 @@ public static class HelperExtensions
         }
 
         var doc = new HtmlDocument();
-        doc.LoadHtml(content.ToString());
+
+        doc.LoadHtml(content.ToString() ?? string.Empty);
         var imgs = doc.DocumentNode.SelectNodes("//img");
-        if (imgs?.Any() != true)
+        if (imgs?.Count == 0)
         {
             return content;
         }
 
         var altTextDictionary = GenerateAltTextDictionary(html.Fragments);
-        foreach (var img in imgs)
+        foreach (var img in imgs ?? Enumerable.Empty<HtmlNode>())
         {
             var src = img.Attributes["src"].Value;
-            if (altTextDictionary.ContainsKey(src))
+            if (altTextDictionary.TryGetValue(src, out var value))
             {
-                img.SetAttributeValue("alt", altTextDictionary[src]);
+                img.SetAttributeValue("alt", value);
             }
         }
 

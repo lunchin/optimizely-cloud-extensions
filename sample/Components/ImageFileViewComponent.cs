@@ -1,4 +1,4 @@
-using sample.Models.Media;
+﻿using sample.Models.Media;
 using sample.Models.ViewModels;
 using EPiServer.Web.Mvc;
 using EPiServer.Web.Routing;
@@ -8,14 +8,9 @@ namespace sample.Components;
 /// <summary>
 /// Controller for the image file.
 /// </summary>
-public class ImageFileViewComponent : PartialContentComponent<ImageFile>
+public class ImageFileViewComponent(UrlResolver urlResolver) : PartialContentComponent<ImageFile>
 {
-    private readonly UrlResolver _urlResolver;
-
-    public ImageFileViewComponent(UrlResolver urlResolver)
-    {
-        _urlResolver = urlResolver;
-    }
+    private readonly UrlResolver _urlResolver = urlResolver;
 
     /// <summary>
     /// The index action for the image file. Creates the view model and renders the view.

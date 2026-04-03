@@ -1,4 +1,4 @@
-using sample.Business;
+﻿using sample.Business;
 using sample.Models.Pages;
 using sample.Models.ViewModels;
 using EPiServer.Shell.Security;
@@ -33,7 +33,7 @@ public abstract class PageControllerBase<T> : PageController<T>, IModifyLayout
 
     public virtual void ModifyLayout(LayoutModel layoutModel)
     {
-        if (PageContext.Page is SitePageData page)
+        if (PageContext.Content is SitePageData page)
         {
             layoutModel.HideHeader = page.HideSiteHeader;
             layoutModel.HideFooter = page.HideSiteFooter;

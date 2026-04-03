@@ -24,13 +24,13 @@ public class SiteSettings : SettingsBase
     public virtual LinkItemCollection CustomerZonePageLinks { get; set; }
 
     [Display(GroupName = SystemTabNames.Content)]
-    public virtual PageReference GlobalNewsPageLink { get; set; }
+    public virtual ContentReference GlobalNewsPageLink { get; set; }
 
     [Display(GroupName = SystemTabNames.Content)]
-    public virtual PageReference ContactsPageLink { get; set; }
+    public virtual ContentReference ContactsPageLink { get; set; }
 
     [Display(GroupName = SystemTabNames.Content)]
-    public virtual PageReference SearchPageLink { get; set; }
+    public virtual ContentReference SearchPageLink { get; set; }
 
     [Display(GroupName = SystemTabNames.Content)]
     public virtual SiteLogotypeBlock SiteLogotype { get; set; }

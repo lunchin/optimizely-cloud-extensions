@@ -15,11 +15,9 @@ public class HideCategoryPropertyExtender(IOptions<ExtensionsOptions> options) :
             {
                 try
                 {
-                    var category = metadata?.Properties?.FirstOrDefault(x => x.PropertyName == "icategorizable_category");
-                    if (category != null)
-                    {
-                        category.ShowForEdit = false;
-                    }
+                    var properties = metadata.GetPropertiesAsync().GetAwaiter().GetResult();
+                    var category = properties?.FirstOrDefault(x => x.PropertyName == "icategorizable_category");
+                    category?.ShowForEdit = false;
                 }
                 catch { }
             }

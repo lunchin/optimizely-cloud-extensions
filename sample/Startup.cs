@@ -1,34 +1,27 @@
 ﻿using EPiServer.Authorization;
 using EPiServer.Azure.Blobs;
-using EPiServer.Cms.Shell;
 using EPiServer.Cms.UI.AspNetIdentity;
+using EPiServer.Data;
+using EPiServer.DependencyInjection;
 using EPiServer.Framework.Hosting;
 using EPiServer.Framework.Web.Resources;
 using EPiServer.Scheduler;
 using EPiServer.Web.Hosting;
 using EPiServer.Web.Routing;
 using lunchin.Optimizely.Cloud.Extensions;
-using lunchin.Optimizely.Cloud.Extensions.Commerce;
+//using lunchin.Optimizely.Cloud.Extensions.Commerce;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using sample.Extensions;
 
 namespace sample;
 
-public class Startup
+public class Startup(IWebHostEnvironment webHostingEnvironment, IConfiguration configuration)
 {
-    private readonly IWebHostEnvironment _webHostingEnvironment;
-    private readonly IConfiguration _configuration;
-    private readonly ILogger<Startup> _logger;
-
-    public Startup(IWebHostEnvironment webHostingEnvironment, IConfiguration configuration)
-    {
-        _webHostingEnvironment = webHostingEnvironment;
-        _configuration = configuration;
-    }
+    private readonly IWebHostEnvironment _webHostingEnvironment = webHostingEnvironment;
+    private readonly IConfiguration _configuration = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -36,16 +29,17 @@ public class Startup
         {
             services.Configure<SchedulerOptions>(options => options.Enabled = false);
             services.Configure<ClientResourceOptions>(uiOptions => uiOptions.Debug = true);
-            services.Configure<CompositeFileProviderOptions>(c => c.BasePathFileProviders.Add(new MappingPhysicalFileProvider("/EPiServer/lunchin.Optimizely.Cloud.Extensions", string.Empty, Path.Combine(_webHostingEnvironment.ContentRootPath, "..\\src\\lunchin.Optimizely.Cloud.Extensions"))));
-            services.Configure<CompositeFileProviderOptions>(c => c.BasePathFileProviders.Add(new MappingPhysicalFileProvider("/EPiServer/lunchin.Optimizely.Cloud.Extensions.Commerce", string.Empty, Path.Combine(_webHostingEnvironment.ContentRootPath, "..\\src\\lunchin.Optimizely.Cloud.Extensions.Commerce"))));
+            services.Configure<CompositeFileProviderOptions>(c => c.BasePathFileProviders.Add(new MappingPhysicalFileProvider("/Optimizely/lunchin.Optimizely.Cloud.Extensions", string.Empty, Path.Combine(_webHostingEnvironment.ContentRootPath, "..\\src\\lunchin.Optimizely.Cloud.Extensions"))));
+            services.Configure<CompositeFileProviderOptions>(c => c.BasePathFileProviders.Add(new MappingPhysicalFileProvider("/Optimizely/lunchin.Optimizely.Cloud.Extensions.Commerce", string.Empty, Path.Combine(_webHostingEnvironment.ContentRootPath, "..\\src\\lunchin.Optimizely.Cloud.Extensions.Commerce"))));
         }
+        services.Configure<DataAccessOptions>(o => o.UpdateDatabaseCompatibilityLevel = true);
 
         services
             .AddCmsAspNetIdentity<ApplicationUser>()
             .AddCms()
-            .AddCommerce()
+            //.AddCommerce()
             .AddlunchinOptimizelyCloudExtensions(_configuration)
-            .AddlunchinOptimizelyCommerceCloudExtensions(_configuration)
+            //.AddlunchinOptimizelyCommerceCloudExtensions(_configuration)
             .AddAlloy()
             .AddAdminUserRegistration(options =>
             {
@@ -54,11 +48,8 @@ public class Startup
             })
             .AddEmbeddedLocalization<Startup>();
 
-        services.Configure<AzureBlobProviderOptions>(o =>
-        {
-            o.ConnectionString =  _configuration.GetConnectionString("AzureBlobConnection");
-        });
-        //services.Configure<ExtensionsOptions>(options => options.HideDefaultCategoryEnabled = false);
+        services.Configure<AzureBlobProviderOptions>(o => o.ConnectionString = _configuration.GetConnectionString("AzureBlobConnection"));
+        services.Configure<ExtensionsOptions>(options => options.HideDefaultCategoryEnabled = true);
 
         // Required by Wangkanai.Detection
         services.AddDetection();
@@ -78,7 +69,7 @@ public class Startup
         }
 
         app.UselunchinOptimizelyCloudExtensions();
-        app.UselunchinOptimizelyCommerceCloudExtensions();
+        //app.UselunchinOptimizelyCommerceCloudExtensions();
         // Required by Wangkanai.Detection
         app.UseDetection();
         app.UseSession();

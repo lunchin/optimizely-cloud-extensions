@@ -3,27 +3,18 @@ using EPiServer.Shell.Web.Mvc;
 
 namespace lunchin.Optimizely.Cloud.Extensions.Settings;
 
-public class SettingsController : Controller
+public class SettingsController(IBootstrapper bootstrapper, IViewManager viewManager) : Controller
 {
-    private readonly IBootstrapper _bootstrapper;
-    private readonly IViewManager _viewManager;
+    private readonly IBootstrapper _bootstrapper = bootstrapper;
+    private readonly IViewManager _viewManager = viewManager;
 
     public SettingsController()
         : this(ServiceLocator.Current.GetInstance<IBootstrapper>(), ServiceLocator.Current.GetInstance<IViewManager>())
     {
     }
 
-    public SettingsController(IBootstrapper bootstrapper, IViewManager viewManager)
-    {
-        _bootstrapper = bootstrapper;
-        _viewManager = viewManager;
-    }
-
     public ActionResult Index(ShellModule module, string controller)
     {
-        EPiServer.Data.Validator.ValidateArgNotNull("module", module);
-        EPiServer.Data.Validator.ValidateArgNotNull("controller", controller);
-
         var view = _viewManager.GetView(module, controller);
         var viewModel = _bootstrapper.CreateViewModel(view.Name, ControllerContext, module.Name);
 

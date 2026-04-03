@@ -1,4 +1,4 @@
-using sample.Business;
+﻿using sample.Business;
 using sample.Models.Pages;
 using sample.Models.ViewModels;
 using EPiServer.Framework.DataAnnotations;
@@ -19,23 +19,16 @@ namespace sample.Controllers;
     AvailableWithoutTag = false)]
 [VisitorGroupImpersonation]
 [RequireClientResources]
-public class PreviewController : ActionControllerBase, IRenderTemplate<BlockData>, IModifyLayout
+public class PreviewController(IContentLoader contentLoader, TemplateResolver templateResolver, DisplayOptions displayOptions) : ActionControllerBase, IRenderTemplate<BlockData>, IModifyLayout
 {
-    private readonly IContentLoader _contentLoader;
-    private readonly TemplateResolver _templateResolver;
-    private readonly DisplayOptions _displayOptions;
-
-    public PreviewController(IContentLoader contentLoader, TemplateResolver templateResolver, DisplayOptions displayOptions)
-    {
-        _contentLoader = contentLoader;
-        _templateResolver = templateResolver;
-        _displayOptions = displayOptions;
-    }
+    private readonly IContentLoader _contentLoader = contentLoader;
+    private readonly TemplateResolver _templateResolver = templateResolver;
+    private readonly DisplayOptions _displayOptions = displayOptions;
 
     public IActionResult Index(IContent currentContent)
     {
         //As the layout requires a page for title etc we "borrow" the start page
-        var startPage = _contentLoader.Get<StartPage>(SiteDefinition.Current.StartPage);
+        var startPage = _contentLoader.Get<StartPage>(ContentReference.StartPage);
 
         var model = new PreviewModel(startPage, currentContent);
 

@@ -1,4 +1,4 @@
-using sample.Models.Media;
+﻿using sample.Models.Media;
 using sample.Models.ViewModels;
 using EPiServer.Web.Mvc;
 using EPiServer.Web.Routing;
@@ -8,14 +8,9 @@ namespace sample.Components;
 /// <summary>
 /// Controller for the video file.
 /// </summary>
-public class VideoFileViewComponent : PartialContentComponent<VideoFile>
+public class VideoFileViewComponent(UrlResolver urlResolver) : PartialContentComponent<VideoFile>
 {
-    private readonly UrlResolver _urlResolver;
-
-    public VideoFileViewComponent(UrlResolver urlResolver)
-    {
-        _urlResolver = urlResolver;
-    }
+    private readonly UrlResolver _urlResolver = urlResolver;
 
     /// <summary>
     /// The index action for the video file. Creates the view model and renders the view.

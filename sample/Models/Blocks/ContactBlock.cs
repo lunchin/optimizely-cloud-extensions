@@ -1,4 +1,4 @@
-namespace sample.Models.Blocks;
+﻿namespace sample.Models.Blocks;
 
 /// <summary>
 /// Used to present contact information with a call-to-action link
@@ -28,7 +28,7 @@ public class ContactBlock : SiteBlockData
         GroupName = SystemTabNames.Content,
         Order = 3)]
     [UIHint(Globals.SiteUIHints.Contact)]
-    public virtual PageReference ContactPageLink { get; set; }
+    public virtual ContentReference ContactPageLink { get; set; }
 
     [Display(
         GroupName = SystemTabNames.Content,

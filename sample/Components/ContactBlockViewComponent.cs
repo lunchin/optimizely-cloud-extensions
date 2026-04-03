@@ -1,4 +1,4 @@
-using sample.Helpers;
+﻿using sample.Helpers;
 using sample.Models.Blocks;
 using sample.Models.Pages;
 using sample.Models.ViewModels;
@@ -7,16 +7,10 @@ using Microsoft.AspNetCore.Html;
 
 namespace sample.Components;
 
-public class ContactBlockViewComponent : BlockComponent<ContactBlock>
+public class ContactBlockViewComponent(IContentLoader contentLoader, IPermanentLinkMapper permanentLinkMapper) : BlockComponent<ContactBlock>
 {
-    private readonly IContentLoader _contentLoader;
-    private readonly IPermanentLinkMapper _permanentLinkMapper;
-
-    public ContactBlockViewComponent(IContentLoader contentLoader, IPermanentLinkMapper permanentLinkMapper)
-    {
-        _contentLoader = contentLoader;
-        _permanentLinkMapper = permanentLinkMapper;
-    }
+    private readonly IContentLoader _contentLoader = contentLoader;
+    private readonly IPermanentLinkMapper _permanentLinkMapper = permanentLinkMapper;
 
     protected override IViewComponentResult InvokeComponent(ContactBlock currentContent)
     {

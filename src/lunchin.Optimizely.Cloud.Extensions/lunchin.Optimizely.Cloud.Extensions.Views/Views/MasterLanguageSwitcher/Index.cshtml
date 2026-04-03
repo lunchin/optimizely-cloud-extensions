@@ -5,7 +5,7 @@
 @addTagHelper *, EPiServer.Shell.UI
 @model MasterLanguageSwitcherViewModel
 @{
-    Layout = "/lunchin.Optimizely.Cloud.Extensions.Views/Views/Shared/_Layout.cshtml";
+    Layout = "/CmsUIViews/Views/Shared/CommonLayout.cshtml";
 }
 
 @section title
@@ -28,7 +28,7 @@
     <div id="root"
          data-epi-antiforgery-header-name="@(Model.AntiforgeryOptions?.HeaderName ?? "")"
          data-epi-antiforgery-form-field-name="@(Model.AntiforgeryOptions?.FormFieldName ?? "")"
-        @Html.Raw(Html.ApplyPlatformNavigation()) style="z-index:auto;">
+       >
     </div>
     @ClientResources.RenderResources("masterlanguage", new[] { ClientResourceType.Script })
 }

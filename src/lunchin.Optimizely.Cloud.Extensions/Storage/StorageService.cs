@@ -50,7 +50,7 @@ public class StorageService : IStorageService
     public async IAsyncEnumerable<BlobHierarchyItem> GetBlobItemsAsync(string containerName, string path)
     {
         var container = await GetContainerAsync(containerName);
-        await foreach (var item in container.GetBlobsByHierarchyAsync(delimiter: "/", prefix: path))
+        await foreach (var item in container.GetBlobsByHierarchyAsync(new GetBlobsByHierarchyOptions { Delimiter = "/", Prefix = path }))
         {
             yield return item;
         }
@@ -103,7 +103,7 @@ public class StorageService : IStorageService
         var deleted = await blobContainerClient.DeleteBlobIfExistsAsync(blobClient.Name);
         if (!deleted?.Value ?? true)
         {
-            await foreach (var blobItem in (Azure.AsyncPageable<BlobItem>)blobContainerClient.GetBlobsAsync(prefix: blobClient.Name))
+            await foreach (var blobItem in (Azure.AsyncPageable<BlobItem>)blobContainerClient.GetBlobsAsync(new GetBlobsOptions { Prefix = blobClient.Name }))
             {
                 var newBlobClient = blobContainerClient.GetBlobClient(blobItem.Name);
                 await newBlobClient.DeleteIfExistsAsync();
@@ -114,7 +114,7 @@ public class StorageService : IStorageService
     public async IAsyncEnumerable<BlobHierarchyItem> GetBlobDirectoriesAsync(string containerName, string? path = null)
     {
         var container = await GetContainerAsync(containerName);
-        await foreach (var dir in container.GetBlobsByHierarchyAsync(delimiter: "/", prefix: path))
+        await foreach (var dir in container.GetBlobsByHierarchyAsync(new GetBlobsByHierarchyOptions { Delimiter = "/", Prefix = path }))
         {
             if (dir.IsPrefix)
             {
@@ -127,7 +127,7 @@ public class StorageService : IStorageService
     {
         var container = await GetContainerAsync(containerName);
         BlobHierarchyItem returnItem;
-        await foreach (var item in container.GetBlobsByHierarchyAsync(delimiter: "/", prefix: path))
+        await foreach (var item in container.GetBlobsByHierarchyAsync(new GetBlobsByHierarchyOptions { Delimiter = "/", Prefix = path }))
         {
             if (item.IsPrefix)
             {

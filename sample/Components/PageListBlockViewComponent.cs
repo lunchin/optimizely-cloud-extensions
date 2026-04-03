@@ -1,4 +1,4 @@
-using sample.Business;
+﻿using sample.Business;
 using sample.Models.Blocks;
 using sample.Models.ViewModels;
 using EPiServer.Filters;
@@ -6,16 +6,10 @@ using EPiServer.Web.Mvc;
 
 namespace sample.Components;
 
-public class PageListBlockViewComponent : BlockComponent<PageListBlock>
+public class PageListBlockViewComponent(ContentLocator contentLocator, IContentLoader contentLoader) : BlockComponent<PageListBlock>
 {
-    private readonly ContentLocator _contentLocator;
-    private readonly IContentLoader _contentLoader;
-
-    public PageListBlockViewComponent(ContentLocator contentLocator, IContentLoader contentLoader)
-    {
-        _contentLocator = contentLocator;
-        _contentLoader = contentLoader;
-    }
+    private readonly ContentLocator _contentLocator = contentLocator;
+    private readonly IContentLoader _contentLoader = contentLoader;
 
     protected override IViewComponentResult InvokeComponent(PageListBlock currentContent)
     {

@@ -1,26 +1,20 @@
 ﻿using System.IO;
 using System.Web;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 
 namespace lunchin.Optimizely.Cloud.Extensions.Storage;
 
 [Authorize(Policy = Constants.lunchinPolicy)]
-public class StorageExplorerController : Controller
+public class StorageExplorerController(IStorageService storageService,
+    IOptions<StaticFileOptions> mimeTypeResolver,
+    IOptions<AntiforgeryOptions> antiforgeryOptions) : Controller
 {
-    private const string BaseRoute = "/api/storageexplorer/";
-    private readonly IStorageService _storageService;
-    private readonly IMimeTypeResolver _mimeTypeResolver;
-    private readonly AntiforgeryOptions _antiforgeryOptions;
-
-    public StorageExplorerController(IStorageService storageService,
-        IMimeTypeResolver mimeTypeResolver,
-        IOptions<AntiforgeryOptions> antiforgeryOptions)
-    {
-        _storageService = storageService;
-        _mimeTypeResolver = mimeTypeResolver;
-        _antiforgeryOptions = antiforgeryOptions.Value;
-    }
+    private const string _baseRoute = "/api/storageexplorer/";
+    private readonly IStorageService _storageService = storageService;
+    private readonly StaticFileOptions _mimeTypeResolver = mimeTypeResolver.Value;
+    private readonly AntiforgeryOptions _antiforgeryOptions = antiforgeryOptions.Value;
 
     public async Task<IActionResult> Index()
     {
@@ -30,7 +24,7 @@ public class StorageExplorerController : Controller
         }));
     }
 
-    [HttpGet($"{BaseRoute}search")]
+    [HttpGet($"{_baseRoute}search")]
     public async Task<IActionResult> Search(string? container = null, string? path = null)
     {
         if (!_storageService.IsInitialized)
@@ -80,14 +74,14 @@ public class StorageExplorerController : Controller
         });
     }
 
-    [HttpDelete($"{BaseRoute}delete")]
+    [HttpDelete($"{_baseRoute}delete")]
     public async Task<IActionResult> Delete(string url)
     {
         await _storageService.DeleteAsync(url);
         return Ok();
     }
 
-    [HttpPost($"{BaseRoute}rename")]
+    [HttpPost($"{_baseRoute}rename")]
     public async Task<IActionResult> Rename(string url, string newName, string? container = null, string? path = null, int page = 1, int pageSize = 100)
     {
         var reference = await _storageService.GetCloudBlockBlobAsync(url);
@@ -100,7 +94,7 @@ public class StorageExplorerController : Controller
         return RedirectToAction("Index", new { path, page, container, pageSize });
     }
 
-    [HttpGet($"{BaseRoute}download")]
+    [HttpGet($"{_baseRoute}download")]
     public async Task<IActionResult> Download(string url)
     {
         var reference = await _storageService.GetCloudBlockBlobAsync(url);
@@ -111,7 +105,7 @@ public class StorageExplorerController : Controller
 
         var file = await reference.DownloadAsync();
         string filename = reference.Name[(reference.Name.LastIndexOf('/') == 0 ? 0 : reference.Name.LastIndexOf('/') + 1)..];
-        var contentType = _mimeTypeResolver.GetMimeMapping(url);
+        var contentType = _mimeTypeResolver.ContentTypeProvider.TryGetContentType(url, out var mimeType) ? mimeType : "application/octet-stream";
 
         var cd = new System.Net.Mime.ContentDisposition
         {
@@ -124,21 +118,18 @@ public class StorageExplorerController : Controller
         return File(file.Value.Content, contentType);
     }
 
-    [HttpPost($"{BaseRoute}upload")]
+    [HttpPost($"{_baseRoute}upload")]
     [AutoValidateAntiforgeryToken]
     public async Task<IActionResult> UploadFiles(List<IFormFile> postedFiles, string container, string? path = null)
     {
-        if (path == null)
-        {
-            path = string.Empty;
-        }
+        path ??= string.Empty;
         foreach (var postedFile in postedFiles)
         {
             if (postedFile != null)
             {
                 string fileName = Path.GetFileName(postedFile.FileName);
                 var bytes = new byte[postedFile.Length];
-                postedFile.OpenReadStream().Read(bytes, 0, bytes.Length);
+                postedFile.OpenReadStream().ReadExactly(bytes);
                 var ms = new MemoryStream(bytes);
                 await _storageService.AddAsync(container, HttpUtility.HtmlDecode(path) + fileName, ms, postedFile.Length);
                 GC.Collect();
@@ -152,7 +143,7 @@ public class StorageExplorerController : Controller
         });
     }
 
-    [HttpPost($"{BaseRoute}createcontainer")]
+    [HttpPost($"{_baseRoute}createcontainer")]
     [AutoValidateAntiforgeryToken]
     public async Task<ActionResult> CreateContainer(string container)
     {
@@ -160,7 +151,7 @@ public class StorageExplorerController : Controller
         return Ok();
     }
 
-    private Dictionary<string, string> GetBreadCrumbs(string? container, string? path)
+    private static Dictionary<string, string> GetBreadCrumbs(string? container, string? path)
     {
         var breadCrumbs = new Dictionary<string, string>()
         {

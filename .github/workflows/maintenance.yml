@@ -1,12 +1,11 @@
-name: Continuous integration
-
+name: Maintenance
 on:
-  push:
-    branches:
-      - 'main'
-  pull_request:
-    branches:
-      - '*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to Set'
+        required: true
+        type: string
 jobs:
   build_test_pack:
     name: Build, test & pack
@@ -21,12 +20,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
          dotnet-version: '10.x'
-      - name: Get next version
-        uses: reecetech/version-increment@2024.10.1
-        id: version
-        with:
-          scheme: conventional_commits
-          increment: patch
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -46,21 +39,21 @@ jobs:
       - name: Restore
         run: dotnet restore lunchin.Optimizely.Cloud.Extensions.sln --configfile NuGet.config
       - name: Build 
-        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ steps.version.outputs.version }}
+        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ inputs.version }}
       - name: Test
         run: dotnet test --no-build --configuration $buildConfiguration
       - name: Pack
         shell: pwsh
         run: |
-          ./build/pack.ps1 -version ${{ steps.version.outputs.version }}
+          ./build/pack.ps1 -version ${{ inputs.version }}
       - name: Publish packages
         run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
       - name: Tag branch
         run: |
           git config --global user.email "cicd@optimizely-cloud-extensions.com"
           git config --global user.name "devops-optimizely-cloud-extensions"
-          git tag -f -a ${{ steps.version.outputs.version }} -m "Release ${{ steps.version.outputs.version }}."
-          git push -f origin ${{ steps.version.outputs.version }}
+          git tag -f -a ${{ inputs.version }} -m "Release ${{ inputs.version }}."
+          git push -f origin ${{ inputs.version }}
       - uses: actions/delete-package-versions@v5
         with: 
           package-name: 'lunchin.Optimizely.Cloud.Extensions'

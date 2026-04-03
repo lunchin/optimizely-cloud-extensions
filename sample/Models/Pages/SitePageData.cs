@@ -1,6 +1,6 @@
 ﻿using sample.Business.Rendering;
 using EPiServer.SpecializedProperties;
-using EPiServer.Commerce.Catalog.DataAnnotations;
+//using EPiServer.Commerce.Catalog.DataAnnotations;
 using sample.Models.Classifications;
 
 namespace sample.Models.Pages;

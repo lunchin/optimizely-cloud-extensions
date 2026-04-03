@@ -8,23 +8,15 @@ using sample.Models.Pages;
 namespace sample.Business;
 
 [ServiceConfiguration(Lifecycle = ServiceInstanceScope.Singleton)]
-public class ContentLocator
+public class ContentLocator(IContentLoader contentLoader,
+    IContentProviderManager providerManager,
+    IPageCriteriaQueryService pageCriteriaQueryService,
+    ISettingsService settingsService)
 {
-    private readonly IContentLoader _contentLoader;
-    private readonly IContentProviderManager _providerManager;
-    private readonly IPageCriteriaQueryService _pageCriteriaQueryService;
-    private readonly ISettingsService _settingsService;
-
-    public ContentLocator(IContentLoader contentLoader,
-        IContentProviderManager providerManager,
-        IPageCriteriaQueryService pageCriteriaQueryService,
-        ISettingsService settingsService)
-    {
-        _contentLoader = contentLoader;
-        _providerManager = providerManager;
-        _pageCriteriaQueryService = pageCriteriaQueryService;
-        _settingsService = settingsService;
-    }
+    private readonly IContentLoader _contentLoader = contentLoader;
+    private readonly IContentProviderManager _providerManager = providerManager;
+    private readonly IPageCriteriaQueryService _pageCriteriaQueryService = pageCriteriaQueryService;
+    private readonly ISettingsService _settingsService = settingsService;
 
     public virtual IEnumerable<T> GetAll<T>(ContentReference rootLink)
         where T : PageData
@@ -50,22 +42,20 @@ public class ContentLocator
     /// <param name="recursive"></param>
     /// <param name="pageTypeId">ID of the page type to filter by</param>
     /// <returns></returns>
-    public IEnumerable<PageData> FindPagesByPageType(PageReference pageLink, bool recursive, int pageTypeId)
+    public IEnumerable<PageData> FindPagesByPageType(ContentReference pageLink, bool recursive, int pageTypeId)
     {
         if (ContentReference.IsNullOrEmpty(pageLink))
         {
             throw new ArgumentNullException(nameof(pageLink), "No page link specified, unable to find pages");
         }
 
-        var pages = recursive
+        return recursive
             ? FindPagesByPageTypeRecursively(pageLink, pageTypeId)
             : _contentLoader.GetChildren<PageData>(pageLink);
-
-        return pages;
     }
 
     // Type specified through page type ID
-    private IEnumerable<PageData> FindPagesByPageTypeRecursively(PageReference pageLink, int pageTypeId)
+    private PageDataCollection FindPagesByPageTypeRecursively(ContentReference pageLink, int pageTypeId)
     {
         var criteria = new PropertyCriteriaCollection
         {

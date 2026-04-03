@@ -1,20 +1,14 @@
-using sample.Models.Blocks;
+﻿using sample.Models.Blocks;
 
 namespace sample.Models.ViewModels;
 
-public class PageListModel
+public class PageListModel(PageListBlock block)
 {
-    public PageListModel(PageListBlock block)
-    {
-        Heading = block.Heading;
-        ShowIntroduction = block.IncludeIntroduction;
-        ShowPublishDate = block.IncludePublishDate;
-    }
-    public string Heading { get; set; }
+    public string Heading { get; set; } = block.Heading;
 
     public IEnumerable<PageData> Pages { get; set; }
 
-    public bool ShowIntroduction { get; set; }
+    public bool ShowIntroduction { get; set; } = block.IncludeIntroduction;
 
-    public bool ShowPublishDate { get; set; }
+    public bool ShowPublishDate { get; set; } = block.IncludePublishDate;
 }

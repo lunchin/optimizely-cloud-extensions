@@ -27,7 +27,7 @@ public class ClassificationContentRepositoryDescriptor : ContentRepositoryDescri
 
     public override IEnumerable<string> MainViews => [HomeView.ViewName];
 
-    public override string SearchArea => ClassifiicationSearchProvider.SearchArea;
+    public override string SearchArea => ClassifiicationSearchProvider._searchArea;
 
     public override int SortOrder => 900;
 }

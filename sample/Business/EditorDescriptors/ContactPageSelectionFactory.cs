@@ -1,4 +1,4 @@
-using EPiServer.Shell.ObjectEditing;
+﻿using EPiServer.Shell.ObjectEditing;
 
 namespace sample.Business.EditorDescriptors;
 
@@ -7,19 +7,14 @@ namespace sample.Business.EditorDescriptors;
 /// </summary>
 /// <seealso cref="ContactPageSelector"/>
 [ServiceConfiguration]
-public class ContactPageSelectionFactory : ISelectionFactory
+public class ContactPageSelectionFactory(ContentLocator contentLocator) : ISelectionFactory
 {
-    private readonly ContentLocator _contentLocator;
-
-    public ContactPageSelectionFactory(ContentLocator contentLocator)
-    {
-        _contentLocator = contentLocator;
-    }
+    private readonly ContentLocator _contentLocator = contentLocator;
 
     public IEnumerable<ISelectItem> GetSelections(ExtendedMetadata metadata)
     {
         var contactPages = _contentLocator.GetContactPages();
 
-        return new List<SelectItem>(contactPages.Select(c => new SelectItem { Value = c.PageLink, Text = c.Name }));
+        return new List<SelectItem>(contactPages.Select(c => new SelectItem { Value = c.ContentLink, Text = c.Name }));
     }
 }

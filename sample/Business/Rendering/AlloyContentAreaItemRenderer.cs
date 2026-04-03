@@ -5,14 +5,9 @@ using static sample.Globals;
 
 namespace sample.Business.Rendering;
 
-public class AlloyContentAreaItemRenderer
+public class AlloyContentAreaItemRenderer(IContentAreaLoader contentAreaLoader)
 {
-    private readonly IContentAreaLoader _contentAreaLoader;
-
-    public AlloyContentAreaItemRenderer(IContentAreaLoader contentAreaLoader)
-    {
-        _contentAreaLoader = contentAreaLoader;
-    }
+    private readonly IContentAreaLoader _contentAreaLoader = contentAreaLoader;
 
     /// <summary>
     /// Gets a CSS class used for styling based on a tag name (ie a Bootstrap class name)

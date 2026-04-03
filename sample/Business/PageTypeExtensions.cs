@@ -1,4 +1,4 @@
-namespace sample.Business;
+﻿namespace sample.Business;
 
 /// <summary>
 /// Provides extension methods for types intended to be used when working with page types
@@ -12,8 +12,8 @@ public static class PageTypeExtensions
     /// <returns></returns>
     public static PageType GetPageType(this Type pageType)
     {
-        var pageTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository<PageType>>();
+        var pageTypeRepository = ServiceLocator.Current.GetInstance<IContentTypeRepository>();
 
-        return pageTypeRepository.Load(pageType);
+        return pageTypeRepository.Load(pageType) as PageType;
     }
 }

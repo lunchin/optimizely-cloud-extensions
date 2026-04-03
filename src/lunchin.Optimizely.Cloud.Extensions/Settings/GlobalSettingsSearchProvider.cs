@@ -1,4 +1,5 @@
-﻿using EPiServer.Cms.Shell.Search;
+﻿using EPiServer.Applications;
+using EPiServer.Cms.Shell.Search;
 using EPiServer.Shell;
 using EPiServer.Shell.Search;
 using EPiServer.Web.Routing;
@@ -6,42 +7,30 @@ using EPiServer.Web.Routing;
 namespace lunchin.Optimizely.Cloud.Extensions.Settings;
 
 [SearchProvider]
-public class GlobalSettingsSearchProvider : ContentSearchProviderBase<SettingsBase, ContentType>
+public class GlobalSettingsSearchProvider(
+    LocalizationService localizationService,
+    IApplicationResolver applicationResolver,
+    IContentTypeRepository contentTypeRepository,
+    EditUrlResolver editUrlResolver,
+    IContentLanguageAccessor languageResolver,
+    UrlResolver urlResolver,
+    UIDescriptorRegistry uiDescriptorRegistry,
+    IContentLoader contentLoader,
+    ISettingsService settingsService) : ContentSearchProviderBase<SettingsBase, ContentType>(
+        localizationService: localizationService,
+        applicationResolver: applicationResolver,
+        contentTypeRepository: contentTypeRepository,
+        editUrlResolver: editUrlResolver,
+        languageResolver: languageResolver,
+        urlResolver: urlResolver,
+        uiDescriptorRegistry: uiDescriptorRegistry)
 {
-    internal const string SearchArea = "Settings/globalsettings";
-    private readonly IContentLoader _contentLoader;
-    private readonly LocalizationService _localizationService;
-    private readonly ISettingsService _settingsService;
+    internal const string _searchArea = "Settings/globalsettings";
+    private readonly IContentLoader _contentLoader = contentLoader;
+    private readonly LocalizationService _localizationService = localizationService;
+    private readonly ISettingsService _settingsService = settingsService;
 
-    public GlobalSettingsSearchProvider(
-        LocalizationService localizationService,
-        ISiteDefinitionResolver siteDefinitionResolver,
-        IContentTypeRepository<ContentType> contentTypeRepository,
-        EPiServer.Web.Routing.EditUrlResolver editUrlResolver,
-        ServiceAccessor<SiteDefinition> currentSiteDefinition,
-        IContentLanguageAccessor languageResolver,
-        UrlResolver urlResolver,
-        TemplateResolver templateResolver,
-        UIDescriptorRegistry uiDescriptorRegistry,
-        IContentLoader contentLoader,
-        ISettingsService settingsService)
-        : base(
-            localizationService: localizationService,
-            siteDefinitionResolver: siteDefinitionResolver,
-            contentTypeRepository: contentTypeRepository,
-            editUrlResolver: editUrlResolver,
-            currentSiteDefinition: currentSiteDefinition,
-            languageResolver: languageResolver,
-            urlResolver: urlResolver,
-            templateResolver: templateResolver,
-            uiDescriptorRegistry: uiDescriptorRegistry)
-    {
-        _contentLoader = contentLoader;
-        _settingsService = settingsService;
-        _localizationService = localizationService;
-    }
-
-    public override string Area => SearchArea;
+    public override string Area => _searchArea;
 
     public override string Category => _localizationService.GetString("/episerver/cms/components/globalsettings/title");
 
@@ -51,7 +40,7 @@ public class GlobalSettingsSearchProvider : ContentSearchProviderBase<SettingsBa
     {
         if (string.IsNullOrWhiteSpace(value: query?.SearchQuery) || query.SearchQuery.Trim().Length < 2)
         {
-            return Enumerable.Empty<SearchResult>();
+            return [];
         }
 
         var searchResultList = new List<SearchResult>();
@@ -96,7 +85,7 @@ public class GlobalSettingsSearchProvider : ContentSearchProviderBase<SettingsBa
 
         var contentLink = contentData.ContentLink;
         var language = string.Empty;
-        ILocalizable localizable = contentData;
+        var localizable = contentData;
 
         if (localizable != null)
         {

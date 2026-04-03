@@ -1,4 +1,4 @@
-namespace sample.Models.Blocks;
+﻿namespace sample.Models.Blocks;
 
 /// <summary>
 /// Used to provide a stylized entry point to a page on the site
@@ -33,5 +33,5 @@ public class TeaserBlock : SiteBlockData
     [Display(
         GroupName = SystemTabNames.Content,
         Order = 4)]
-    public virtual PageReference Link { get; set; }
+    public virtual ContentReference Link { get; set; }
 }

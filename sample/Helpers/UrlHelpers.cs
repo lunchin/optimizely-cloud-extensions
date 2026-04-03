@@ -1,4 +1,4 @@
-using EPiServer.Web.Routing;
+﻿using EPiServer.Web.Routing;
 
 namespace sample.Helpers;
 
@@ -16,7 +16,7 @@ public static class UrlHelpers
             return string.Empty;
         }
 
-        var contentLoader = ServiceLocator.Current.GetInstance<IContentLoader>();
+        var contentLoader = urlHelper.ActionContext.HttpContext.RequestServices.GetInstance<IContentLoader>();
         var page = contentLoader.Get<PageData>(contentLink);
 
         return PageLinkUrl(urlHelper, page);
@@ -37,7 +37,7 @@ public static class UrlHelpers
                 return urlResolver.GetUrl(page.ContentLink);
 
             case PageShortcutType.Shortcut:
-                if (page.Property["PageShortcutLink"] is PropertyPageReference shortcutProperty &&
+                if (page.Property["PageShortcutLink"] is PropertyContentReference shortcutProperty &&
                     !ContentReference.IsNullOrEmpty(shortcutProperty.ContentLink))
                 {
                     return urlHelper.PageLinkUrl(shortcutProperty.ContentLink);
@@ -48,8 +48,6 @@ public static class UrlHelpers
                 return page.LinkURL;
             case PageShortcutType.Inactive:
                 break;
-            default:
-                break;
         }
         return string.Empty;
     }
@@ -57,7 +55,7 @@ public static class UrlHelpers
     /// <summary>
     /// Returns the URL anchor target for a page with shortcut settings
     /// </summary>
-    public static string PageLinkTarget(this IUrlHelper urlHelper, PageData page)
+    public static string PageLinkTarget(this PageData page)
     {
         return page.LinkType switch
         {
