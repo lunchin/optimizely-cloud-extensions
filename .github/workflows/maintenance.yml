@@ -1,0 +1,68 @@
+name: Maintenance
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to Set'
+        required: true
+        type: string
+jobs:
+  build_test_pack:
+    name: Build, test & pack
+    runs-on: ubuntu-latest
+    env:
+      buildConfiguration: release
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@v4
+        with:
+         dotnet-version: '9.x'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+            node-version: '20'
+      - name: Setup .NET Core @ Latest
+        uses: actions/setup-dotnet@v3
+        with:
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Install react dependencies
+        run: npm ci
+        working-directory: react
+      - name: Run react build
+        run: npm run build
+        working-directory: react
+      - name: Restore
+        run: dotnet restore lunchin.Optimizely.Cloud.Extensions.sln --configfile NuGet.config
+      - name: Build 
+        run: dotnet build --no-restore --configuration $buildConfiguration /p:Version=${{ inputs.version }}
+      - name: Test
+        run: dotnet test --no-build --configuration $buildConfiguration
+      - name: Pack
+        shell: pwsh
+        run: |
+          ./build/pack.ps1 -version ${{ inputs.version }}
+      - name: Publish packages
+        run: dotnet nuget push artifacts/**/*.nupkg --skip-duplicate -k ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag branch
+        run: |
+          git config --global user.email "cicd@optimizely-cloud-extensions.com"
+          git config --global user.name "devops-optimizely-cloud-extensions"
+          git tag -f -a ${{ inputs.version }} -m "Release ${{ inputs.version }}."
+          git push -f origin ${{ inputs.version }}
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'lunchin.Optimizely.Cloud.Extensions'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: "false"
+      - uses: actions/delete-package-versions@v5
+        with: 
+          package-name: 'lunchin.Optimizely.Cloud.Extensions.Commerce'
+          package-type: 'nuget'
+          min-versions-to-keep: 10
+          delete-only-pre-release-versions: "false"
